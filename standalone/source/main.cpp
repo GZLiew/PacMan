@@ -15,12 +15,8 @@ int main(int argc, char* args[]) {
     fprintf(stderr, "could not initialize sdl2: %s\n", SDL_GetError());
     return 1;
   }
-  window = SDL_CreateWindow(
-			    "hello_sdl2",
-			    SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			    SCREEN_WIDTH, SCREEN_HEIGHT,
-			    SDL_WINDOW_SHOWN
-			    );
+  window = SDL_CreateWindow("hello_sdl2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   if (window == NULL) {
     fprintf(stderr, "could not create window: %s\n", SDL_GetError());
     return 1;
