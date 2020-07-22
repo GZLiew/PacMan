@@ -42,7 +42,7 @@ CPMAddPackage(
 
 file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
 add_executable(PacManTests ${sources})
-target_link_libraries(PacManTests doctest PacMan)
+target_link_libraries(PacManTests doctest PacMan SDL2)
 
 set_target_properties(PacManTests PROPERTIES CXX_STANDARD 17)
 

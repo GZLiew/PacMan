@@ -26,6 +26,12 @@ CPMAddPackage(
   VERSION 1.3
 )
 
+CPMAddPackage(
+  NAME SDL2
+  VERSION 2.0.12
+  URL https://libsdl.org/release/SDL2-2.0.12.zip
+)
+
 # ---- Add source files ----
 FILE(GLOB_RECURSE headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 FILE(GLOB_RECURSE sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
@@ -41,6 +47,8 @@ target_include_directories(PacMan
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
+
+target_include_directories(PacMan PRIVATE ${SDL2_SOURCE_DIR}/include)
 
 # ---- Create an installable target ----
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)

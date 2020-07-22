@@ -26,13 +26,6 @@ CPMAddPackage(
   SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
 )
 
-CPMAddPackage(
-  NAME SDL2
-  VERSION 2.0.12
-  URL https://libsdl.org/release/SDL2-2.0.12.zip
-)
-
-
 # ---- Create standalone executable ----
 
 file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
