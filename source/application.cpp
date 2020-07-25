@@ -1,6 +1,4 @@
-#include <SDL.h>
 #include <application.h>
-#include <stdio.h>
 
 Application::~Application() {
   if (this->m_sdl_initialized) {
@@ -34,6 +32,9 @@ Application::Application(const Config &config) : m_config(config) {
 
     // Init renderer
     this->m_renderer = new Render::MasterRenderer();
+
+    // Init input
+    this->m_keyboard = new Input::Keyboard();
   }
 }
 
