@@ -14,6 +14,7 @@ public:
   Config get_config();
 
 private:
+  bool m_sdl_initialized = false;
   const Config& m_config;
   Render::MasterRenderer* m_renderer;
   SDL_Window* m_window;
