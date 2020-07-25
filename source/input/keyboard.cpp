@@ -1,8 +1,6 @@
 #include <input/keyboard.h>
 
-Input::Keyboard::Keyboard() {
-  std::fill(this->m_keys.begin(), this->m_keys.end(), false);
-}
+Input::Keyboard::Keyboard() { std::fill(this->m_keys.begin(), this->m_keys.end(), false); }
 
 void Input::Keyboard::update(SDL_Event &e) {
   if (!SDL_PollEvent(&e)) return;
@@ -21,6 +19,4 @@ void Input::Keyboard::update(SDL_Event &e) {
 
 bool Input::Keyboard::isKeyDown(SDL_Keycode key) const { return m_keys[key]; }
 
-bool Input::Keyboard::keyReleased(SDL_Keycode key) const {
-  return m_last_released_key == key;
-}
+bool Input::Keyboard::keyReleased(SDL_Keycode key) const { return m_last_released_key == key; }
