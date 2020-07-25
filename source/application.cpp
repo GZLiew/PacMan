@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 Application::~Application() {
-  if(this->m_sdl_initialized){
+  if (this->m_sdl_initialized) {
     SDL_DestroyWindow(this->m_window);
     delete this->m_renderer;
     delete this->m_basesurface;
@@ -18,8 +18,8 @@ Application::Application(const Config &config) : m_config(config) {
     this->m_sdl_initialized = false;
   } else {
     this->m_window
-      = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                         this->m_config.windowX, this->m_config.windowY, SDL_WINDOW_SHOWN);
+        = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                           this->m_config.windowX, this->m_config.windowY, SDL_WINDOW_SHOWN);
 
     if (this->m_window == NULL) {
       fprintf(stderr, "could not create window: %s\n", SDL_GetError());
@@ -28,8 +28,8 @@ Application::Application(const Config &config) : m_config(config) {
 
     this->m_basesurface = SDL_GetWindowSurface(this->m_window);
     SDL_FillRect(this->m_basesurface, NULL,
-                SDL_MapRGB(this->m_basesurface->format, 0xFF, 0xFF, 0xFF));
-    
+                 SDL_MapRGB(this->m_basesurface->format, 0xFF, 0xFF, 0xFF));
+
     this->m_sdl_initialized = true;
 
     // Init renderer
