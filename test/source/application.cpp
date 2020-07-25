@@ -2,11 +2,13 @@
 #include <config.h>
 #include <doctest/doctest.h>
 
-TEST_CASE("Application has default config") {
-  Config config;
-  Application app = Application(config);
+TEST_SUITE("Application") {
+  TEST_CASE("Application has default config") {
+    Config config;
+    Application app = Application(config);
 
-  CHECK(app.get_config().fullScreen == false);
-  CHECK(app.get_config().windowX == 800);
-  CHECK(app.get_config().windowY == 600);
+    CHECK(app.get_config().fullScreen == false);
+    CHECK(app.get_config().windowX == 800);
+    CHECK(app.get_config().windowY == 600);
+  }
 }

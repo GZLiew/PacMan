@@ -3,7 +3,7 @@
 Input::Keyboard::Keyboard() { std::fill(this->m_keys.begin(), this->m_keys.end(), false); }
 
 void Input::Keyboard::update(SDL_Event &e) {
-  if (!SDL_PollEvent(&e)) return;
+  this->m_last_released_key = SDL_KEY_COUNT;
   switch (e.type) {
     case SDL_KEYDOWN:
       this->m_last_released_key = e.key.keysym.sym;
