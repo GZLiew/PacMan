@@ -1,6 +1,6 @@
-#include <doctest/doctest.h>
 #include <application.h>
 #include <config.h>
+#include <doctest/doctest.h>
 
 TEST_CASE("Application has default config") {
   Config config;

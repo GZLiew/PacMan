@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <application.h>
+#include <stdio.h>
 
 int main(int argc, char* args[]) {
   Config config;
