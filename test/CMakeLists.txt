@@ -34,13 +34,14 @@ endif()
 
 CPMAddPackage(
   NAME Format.cmake
+  VERSION 1.5
   GITHUB_REPOSITORY TheLartians/Format.cmake
-  VERSION 1.3
+  # enable cmake formatting
+  OPTIONS "FORMAT_CHECK_CMAKE ON"
 )
-
 # ---- Create binary ----
 
-file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
+file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.cpp)
 add_executable(PacManTests ${sources})
 target_link_libraries(PacManTests doctest PacMan SDL2)
 
