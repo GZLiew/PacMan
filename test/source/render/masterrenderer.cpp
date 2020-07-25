@@ -3,5 +3,4 @@
 
 using namespace Render;
 
-TEST_CASE("Master renderer should be built correctly") {
-}
+TEST_CASE("Master renderer should be built correctly") {}

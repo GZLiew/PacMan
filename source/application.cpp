@@ -2,7 +2,15 @@
 #include <application.h>
 #include <stdio.h>
 
+Application::~Application() {
+  SDL_DestroyWindow(this->m_window);
+  delete this->m_renderer;
+  delete this->m_basesurface;
+  SDL_Quit();
+}
+
 Application::Application(const Config &config) : m_config(config) {
+  // Init SDL components
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     fprintf(stderr, "could not initialize sdl2: %s\n", SDL_GetError());
     return;
@@ -19,14 +27,17 @@ Application::Application(const Config &config) : m_config(config) {
   this->m_basesurface = SDL_GetWindowSurface(this->m_window);
   SDL_FillRect(this->m_basesurface, NULL,
                SDL_MapRGB(this->m_basesurface->format, 0xFF, 0xFF, 0xFF));
+
+  // Init renderer
+  this->m_renderer = new Render::MasterRenderer();
 }
 
 void Application::run_loop() {
-  SDL_UpdateWindowSurface(this->m_window);
-  SDL_Delay(2000);
-  SDL_DestroyWindow(this->m_window);
-  SDL_Quit();
-  return;
+  this->m_renderer->draw_characters();
+  this->m_renderer->draw_hud();
+  this->m_renderer->draw_points();
+  this->m_renderer->draw_walls();
+  this->m_renderer->finish_render(this->m_window);
 }
 
 Config Application::get_config() { return this->m_config; }
