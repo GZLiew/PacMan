@@ -1,9 +1,9 @@
 #include <application.h>
+#include <iostream>
 
 Application::~Application() {
   if (this->m_sdl_initialized) {
     SDL_DestroyWindow(this->m_window);
-    delete this->m_renderer;
     delete this->m_basesurface;
     SDL_Quit();
   }
@@ -31,19 +31,36 @@ Application::Application(const Config &config) : m_config(config) {
     this->m_sdl_initialized = true;
 
     // Init renderer
-    this->m_renderer = new Render::MasterRenderer();
+    this->m_renderer = Render::MasterRenderer();
 
-    // Init input
-    this->m_keyboard = new Input::Keyboard();
+    // Push initial state
+    this->pushState<State::PlayingState>(*this);
   }
 }
 
+
 void Application::run_loop() {
-  this->m_renderer->draw_characters();
-  this->m_renderer->draw_hud();
-  this->m_renderer->draw_points();
-  this->m_renderer->draw_walls();
-  this->m_renderer->finish_render(this->m_window);
+  SDL_Event e;
+  while (!this->m_states.empty()) {
+    auto &state = *this->m_states.back();
+    state.handleInput();
+    //state.update(0);
+
+    state.render(this->m_renderer);
+    this->m_renderer.finish_render(this->m_window);
+
+    // Check input
+    while(SDL_PollEvent(&e)){
+      this->m_states.back()->handleEvent(e);
+      switch(e.type){
+        case SDL_QUIT:
+          while(!this->m_states.empty()) this->m_states.pop_back();
+          break;
+        default:
+          break;
+      }
+    }
+  }
 }
 
 Config Application::get_config() { return this->m_config; }
