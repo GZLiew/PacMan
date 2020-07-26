@@ -1,22 +1,21 @@
 #include <input/keyboard.h>
 
-Input::Keyboard::Keyboard() { std::fill(this->m_keys.begin(), this->m_keys.end(), false); }
+Input::Keyboard::Keyboard() { this->m_pushed_keys = std::set<SDL_Keycode>();}
 
 void Input::Keyboard::update(SDL_Event &e) {
-  this->m_last_released_key = SDL_KEY_COUNT;
   switch (e.type) {
     case SDL_KEYDOWN:
       this->m_last_released_key = e.key.keysym.sym;
-      this->m_keys[e.key.keysym.sym] = true;
+      this->m_pushed_keys.insert(e.key.keysym.sym);
       break;
     case SDL_KEYUP:
-      this->m_keys[e.key.keysym.sym] = false;
+      this->m_pushed_keys.erase(e.key.keysym.sym);
       break;
     default:
       break;
   }
 }
 
-bool Input::Keyboard::isKeyDown(SDL_Keycode key) const { return m_keys[key]; }
+bool Input::Keyboard::isKeyDown(SDL_Keycode key) const { return this->m_pushed_keys.find(key) != this->m_pushed_keys.end() ; }
 
 bool Input::Keyboard::keyReleased(SDL_Keycode key) const { return m_last_released_key == key; }

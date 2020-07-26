@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-#include <array>
+#include <set>
 
 #define SDL_KEY_COUNT 322
 
@@ -17,7 +17,7 @@ namespace Input {
     bool keyReleased(SDL_Keycode key) const;
 
   private:
-    std::array<bool, SDL_KEY_COUNT> m_keys;
+    std::set<SDL_Keycode> m_pushed_keys;
     SDL_Keycode m_last_released_key;
   };
 }  // namespace Input
