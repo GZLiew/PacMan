@@ -15,9 +15,9 @@ class Application {
 public:
   Application(const Config& config);
   ~Application();
-  template <typename T, typename... Args> void pushState(Args &&... args){
+  template <typename T, typename... Args> void pushState(Args&&... args) {
     this->m_states.push_back(std::make_unique<T>(std::forward<Args>(args)...));
-    auto &s = m_states.back();
+    auto& s = m_states.back();
     s->onOpen();
   }
   void run_loop();
@@ -25,7 +25,11 @@ public:
 
 private:
   bool m_sdl_initialized = false;
+  bool m_window_created = false;
+  bool m_gl_initialized = false;
   const Config& m_config;
+
+  SDL_GLContext m_gl_context;
 
   std::vector<std::unique_ptr<State::BaseState>> m_states;
 

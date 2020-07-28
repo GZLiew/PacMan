@@ -1,6 +1,6 @@
 #include <input/keyboard.h>
 
-Input::Keyboard::Keyboard() { this->m_pushed_keys = std::set<SDL_Keycode>();}
+Input::Keyboard::Keyboard() { this->m_pushed_keys = std::set<SDL_Keycode>(); }
 
 void Input::Keyboard::update(SDL_Event &e) {
   switch (e.type) {
@@ -16,6 +16,8 @@ void Input::Keyboard::update(SDL_Event &e) {
   }
 }
 
-bool Input::Keyboard::isKeyDown(SDL_Keycode key) const { return this->m_pushed_keys.find(key) != this->m_pushed_keys.end() ; }
+bool Input::Keyboard::isKeyDown(SDL_Keycode key) const {
+  return this->m_pushed_keys.find(key) != this->m_pushed_keys.end();
+}
 
 bool Input::Keyboard::keyReleased(SDL_Keycode key) const { return m_last_released_key == key; }

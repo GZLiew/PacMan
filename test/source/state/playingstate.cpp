@@ -7,6 +7,5 @@
 using namespace Input;
 
 TEST_SUITE("State::PlayingState") {
-  TEST_CASE("") {
-  }
+  TEST_CASE("") {}
 }

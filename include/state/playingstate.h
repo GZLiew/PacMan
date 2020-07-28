@@ -1,11 +1,11 @@
 #pragma once
 
-#include "basestate.h"
 #include "../input/keyboard.h"
 #include "../render/masterrenderer.h"
+#include "basestate.h"
 
-namespace State{
-class PlayingState : public BaseState {
+namespace State {
+  class PlayingState : public BaseState {
   public:
     PlayingState(Application &app);
     ~PlayingState();
@@ -18,8 +18,8 @@ class PlayingState : public BaseState {
     void render(Render::MasterRenderer &renderer) override;
 
     void onOpen() override;
-  
+
   private:
     Input::Keyboard m_keyboard;
-};
-}
+  };
+}  // namespace State
