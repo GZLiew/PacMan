@@ -1,21 +1,21 @@
 #pragma once
 
 #include <SDL.h>
-#include <input/input.h>
 
 #include <set>
 
 #define SDL_KEY_COUNT 322
 
 namespace Input {
-  class Keyboard : public Input {
+  class Input {
   public:
-    Keyboard();
+    Input() {};
+    virtual ~Input() = default;
 
-    void update(SDL_Event &e) override;
+    virtual void update(SDL_Event &e) = 0;
 
-    bool isKeyDown(SDL_Keycode key) const override;
-    bool keyReleased(SDL_Keycode key) const override;
+    virtual bool isKeyDown(SDL_Keycode key) const = 0;
+    virtual bool keyReleased(SDL_Keycode key) const = 0;
 
   private:
     std::set<SDL_Keycode> m_pushed_keys;
