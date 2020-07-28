@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL.h>
-#include <input/input.h>
+#include <input.h>
 
 #include <set>
 

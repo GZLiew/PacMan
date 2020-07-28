@@ -1,6 +1,6 @@
 #include <input/keyboard.h>
 
-Input::Keyboard::Keyboard() { this->m_pushed_keys = std::set<SDL_Keycode>(); }
+Input::Keyboard::Keyboard() : Input::Input() { this->m_pushed_keys = std::set<SDL_Keycode>(); }
 
 void Input::Keyboard::update(SDL_Event &e) {
   switch (e.type) {

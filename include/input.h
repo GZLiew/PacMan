@@ -9,7 +9,7 @@
 namespace Input {
   class Input {
   public:
-    Input() {};
+    Input(){};
     virtual ~Input() = default;
 
     virtual void update(SDL_Event &e) = 0;
