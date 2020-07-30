@@ -1,8 +1,7 @@
 #pragma once
 
 #include <SDL.h>
-
-#include <set>
+#include <input/actions.h>
 
 #define SDL_KEY_COUNT 322
 
@@ -14,11 +13,7 @@ namespace Input {
 
     virtual void update(SDL_Event &e) = 0;
 
-    virtual bool isKeyDown(SDL_Keycode key) const = 0;
-    virtual bool keyReleased(SDL_Keycode key) const = 0;
-
-  private:
-    std::set<SDL_Keycode> m_pushed_keys;
-    SDL_Keycode m_last_released_key;
+    virtual bool isKeyDown(Action action) const = 0;
+    virtual bool keyReleased(Action action) const = 0;
   };
 }  // namespace Input
