@@ -1,8 +1,11 @@
 #pragma once
 
-#include "../input/keyboard.h"
-#include "../render/masterrenderer.h"
-#include "basestate.h"
+#include <input/keyboard.h>
+#include <objects/pacman.h>
+#include <render/masterrenderer.h>
+#include <state/basestate.h>
+
+#include <memory>
 
 namespace State {
   class PlayingState : public BaseState {
@@ -15,11 +18,12 @@ namespace State {
 
     void update(float deltaTime) override;
 
-    void render(Render::MasterRenderer &renderer) override;
+    void render(std::shared_ptr<Render::MasterRenderer> renderer) override;
 
     void onOpen() override;
 
   private:
-    Input::Keyboard m_keyboard;
+    std::shared_ptr<Input::Input> m_input;
+    Objects::Pacman m_pacman;
   };
 }  // namespace State

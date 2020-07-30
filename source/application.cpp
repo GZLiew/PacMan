@@ -13,6 +13,7 @@ Application::~Application() {
     if (this->m_window_created) SDL_DestroyWindow(this->m_window);
     SDL_Quit();
   }
+  this->m_renderer.reset();
 }
 
 Application::Application(const Config &config) : m_config(config) {
@@ -53,7 +54,7 @@ Application::Application(const Config &config) : m_config(config) {
     this->m_sdl_initialized = true;
 
     // Init renderer
-    this->m_renderer = Render::MasterRenderer();
+    this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer());
 
     // Push initial state
     this->pushState<State::PlayingState>(*this);
@@ -68,7 +69,7 @@ void Application::run_loop() {
     // state.update(0);
 
     state.render(this->m_renderer);
-    this->m_renderer.finish_render(this->m_window);
+    this->m_renderer->finish_render(this->m_window);
 
     // Check input
     while (SDL_PollEvent(&e)) {

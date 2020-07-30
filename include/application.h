@@ -33,7 +33,7 @@ private:
 
   std::vector<std::unique_ptr<State::BaseState>> m_states;
 
-  Render::MasterRenderer m_renderer;
+  std::shared_ptr<Render::MasterRenderer> m_renderer;
   SDL_Window* m_window;
   SDL_Surface* m_basesurface;
 };  // class Application

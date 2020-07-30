@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SDL.h>
+#include <render/masterrenderer.h>
 
-#include "../render/masterrenderer.h"
+#include <memory>
 
 class Application;
 class MasterRenderer;
@@ -18,7 +19,7 @@ namespace State {
 
     virtual void update(float deltaTime) = 0;
 
-    virtual void render(Render::MasterRenderer &renderer) = 0;
+    virtual void render(std::shared_ptr<Render::MasterRenderer> renderer) = 0;
 
     virtual void onOpen() = 0;
 
