@@ -1,14 +1,24 @@
 #pragma once
 
 #include <entity.h>
-#include <input/input.h>
+#include <input.h>
+#include <input/actions.h>
+
+#include <memory>
 
 namespace Objects {
-    class Pacman {
-        Pacman();
-        void handleInput(Input::Input &keyboard);
-        void update(float dt);
+  enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
 
-        void draw();
-    };
-}
+  class Pacman : public Entity {
+  public:
+    Pacman();
+    void handleInput(std::shared_ptr<Input::Input> input);
+    void update(float dt);
+
+    void draw();
+
+  private:
+    Direction m_next_direction = NONE;
+    float dt;
+  };
+}  // namespace Objects
