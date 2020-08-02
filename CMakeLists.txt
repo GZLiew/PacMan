@@ -27,6 +27,13 @@ CPMAddPackage(
 )
 
 CPMAddPackage(
+  NAME glm
+  GITHUB_REPOSITORY g-truc/glm
+  VERSION 0.9.9.8
+  GIT_TAG bf71a834948186f4097caa076cd2663c69a10e1e
+)
+
+CPMAddPackage(
   NAME SDL2
   VERSION 2.0.12
   URL https://libsdl.org/release/SDL2-2.0.12.zip
@@ -49,6 +56,7 @@ target_include_directories(PacMan
 )
 
 target_include_directories(PacMan PRIVATE ${SDL2_SOURCE_DIR}/include)
+target_include_directories(PacMan PRIVATE ${glm_SOURCE_DIR})
 
 # ---- Create an installable target ----
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
