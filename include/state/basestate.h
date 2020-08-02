@@ -6,7 +6,6 @@
 #include <memory>
 
 class Application;
-class MasterRenderer;
 
 namespace State {
   class BaseState {

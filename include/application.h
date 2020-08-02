@@ -7,7 +7,9 @@
 #include <state/basestate.h>
 #include <state/playingstate.h>
 #include <stdio.h>
+#include <utils.h>
 
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -34,6 +36,6 @@ private:
   std::vector<std::unique_ptr<State::BaseState>> m_states;
 
   std::shared_ptr<Render::MasterRenderer> m_renderer;
-  SDL_Window* m_window;
-  SDL_Surface* m_basesurface;
+  std::unique_ptr<SDL_Window, Utils::SDLWindowDeleter> m_window;
+  std::shared_ptr<SDL_Surface> m_basesurface;
 };  // class Application
