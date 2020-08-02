@@ -23,9 +23,9 @@ Application::Application(const Config &config) : m_config(config) {
     Utils::showError("SDL failed to initialize: ");
     this->m_sdl_initialized = false;
   } else {
-    this->m_window = std::unique_ptr<SDL_Window, Utils::SDLWindowDeleter>(SDL_CreateWindow("PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                      this->m_config.windowX, this->m_config.windowY,
-                                      SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN));
+    this->m_window = std::unique_ptr<SDL_Window, Utils::SDLWindowDeleter>(SDL_CreateWindow(
+        "PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->m_config.windowX,
+        this->m_config.windowY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN));
 
     if (this->m_window == NULL) {
       Utils::showError("could not create window: %s\n");

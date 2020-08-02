@@ -5,8 +5,8 @@
 #include <input/actions.h>
 #include <utils.h>
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace Objects {
   enum Direction { NONE, UP, DOWN, LEFT, RIGHT };

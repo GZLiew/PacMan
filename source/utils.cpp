@@ -7,7 +7,7 @@ void Utils::showError(std::string msg) {
 
 SDL_Surface* Utils::loadSDLSurface(const char* file) {
   SDL_Surface* loadedSurface = SDL_LoadBMP(file);
-  if(loadedSurface == NULL){
+  if (loadedSurface == NULL) {
     showError("");
   }
   return loadedSurface;
