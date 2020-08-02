@@ -39,6 +39,10 @@ CPMAddPackage(
   # enable cmake formatting
   OPTIONS "FORMAT_CHECK_CMAKE ON"
 )
+
+# ---- Copy resources to build folder ----
+FILE(COPY ../resources/ DESTINATION "${CMAKE_BINARY_DIR}/resources")
+
 # ---- Create binary ----
 
 file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.cpp)

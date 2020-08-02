@@ -37,4 +37,7 @@ set_target_properties(PacManStandalone PROPERTIES
   OUTPUT_NAME "PacMan"
 )
 
-target_link_libraries(PacManStandalone PacMan cxxopts SDL2)
+target_link_libraries(PacManStandalone PacMan cxxopts SDL2 glm)
+
+# ---- Copy resources to build folder ----
+FILE(COPY ../resources/ DESTINATION "${CMAKE_BINARY_DIR}/resources")

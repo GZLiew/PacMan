@@ -3,7 +3,9 @@
 #include <entity.h>
 #include <input.h>
 #include <input/actions.h>
+#include <utils.h>
 
+#include <vector>
 #include <memory>
 
 namespace Objects {
@@ -15,10 +17,13 @@ namespace Objects {
     void handleInput(std::shared_ptr<Input::Input> input);
     void update(float dt);
 
-    void draw();
+    void draw(std::shared_ptr<SDL_Surface> base);
 
   private:
+    Direction m_direction = RIGHT;
     Direction m_next_direction = NONE;
+    std::vector<std::unique_ptr<SDL_Surface>> m_sprites;
+    int m_animation_state = 0;
     float dt;
   };
 }  // namespace Objects
