@@ -16,7 +16,7 @@ namespace State {
     void handleEvent(SDL_Event &e) override;
     void handleInput() override;
 
-    void update(float deltaTime) override;
+    void update(float dt) override;
 
     void render(std::shared_ptr<Render::MasterRenderer> renderer) override;
 

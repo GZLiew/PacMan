@@ -9,7 +9,7 @@ Application::~Application() {
   this->m_states.clear();
   this->m_renderer.reset();
   this->m_window.reset();
-  this->m_basesurface.reset();
+  this->m_base_surface.reset();
 }
 
 Application::Application(const Config &config) : m_config(config) {
@@ -43,14 +43,14 @@ Application::Application(const Config &config) : m_config(config) {
       this->m_gl_initialized = true;
     }
 
-    this->m_basesurface = std::shared_ptr<SDL_Surface>(SDL_GetWindowSurface(this->m_window.get()));
-    SDL_FillRect(this->m_basesurface.get(), NULL,
-                 SDL_MapRGB(this->m_basesurface->format, 0xFF, 0xFF, 0xFF));
+    this->m_base_surface = std::shared_ptr<SDL_Surface>(SDL_GetWindowSurface(this->m_window.get()));
+    SDL_FillRect(this->m_base_surface.get(), NULL,
+                 SDL_MapRGB(this->m_base_surface->format, 0x00, 0x00, 0x00));
 
     this->m_sdl_initialized = true;
 
     // Init renderer
-    this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer());
+    this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(this->m_base_surface));
 
     // Push initial state
     this->pushState<State::PlayingState>(*this);
@@ -62,10 +62,10 @@ void Application::run_loop() {
   while (!this->m_states.empty()) {
     auto &state = *this->m_states.back();
     state.handleInput();
-    // state.update(0);
+    state.update(0.01);
 
     state.render(this->m_renderer);
-    this->m_renderer->finish_render(this->m_window.get());
+    this->m_renderer->finishRender(this->m_window.get());
 
     // Check input
     while (SDL_PollEvent(&e)) {

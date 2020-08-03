@@ -16,10 +16,11 @@ void State::PlayingState::handleEvent(SDL_Event &e) { this->m_input->update(e); 
 
 void State::PlayingState::handleInput() { this->m_pacman.handleInput(this->m_input); }
 
-void State::PlayingState::update(float deltaTime) { this->m_pacman.update(deltaTime); }
+void State::PlayingState::update(float dt) { this->m_pacman.update(dt); }
 
 void State::PlayingState::render(std::shared_ptr<Render::MasterRenderer> renderer) {
-  renderer->draw_characters();
+  renderer->clearSurface();
+  this->m_pacman.draw(renderer->getBaseSurface());
 }
 
 void State::PlayingState::onOpen() {}

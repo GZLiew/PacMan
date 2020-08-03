@@ -1,15 +1,16 @@
 #pragma once
 #include <SDL.h>
+#include <memory>
 
 namespace Render {
   class MasterRenderer {
   public:
-    void draw_characters();
-    void draw_hud();
-    void draw_points();
-    void draw_walls();
-    void finish_render(SDL_Window* window);
-
+    MasterRenderer(std::shared_ptr<SDL_Surface> baseSurface);
+    void finishRender(SDL_Window* window);
+    void clearSurface();
+    std::shared_ptr<SDL_Surface> getBaseSurface();
+    
   private:
+    std::shared_ptr<SDL_Surface> m_base_surface;
   };
 }  // namespace Render

@@ -37,5 +37,5 @@ private:
 
   std::shared_ptr<Render::MasterRenderer> m_renderer;
   std::unique_ptr<SDL_Window, Utils::SDLWindowDeleter> m_window;
-  std::shared_ptr<SDL_Surface> m_basesurface;
+  std::shared_ptr<SDL_Surface> m_base_surface;
 };  // class Application

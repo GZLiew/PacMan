@@ -1,6 +1,6 @@
 #include <objects/pacman.h>
 
-Objects::Pacman::Pacman() : Entity({32.0f, 32.0f}, {0.f, 0.f}, {0.f, 0.f}) {
+Objects::Pacman::Pacman() : Entity({32.0f, 32.0f}, {0.f, 0.f}, {1.f, 0.f}) {
   this->m_sprites = std::vector<std::unique_ptr<SDL_Surface>>(3);
   this->m_sprites[0]
       = std::unique_ptr<SDL_Surface>(Utils::loadSDLSurface("resources/pacman_1.bmp"));
