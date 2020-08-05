@@ -37,21 +37,15 @@ Application::Application(const Config& config) : m_config(config) {
       if (this->m_gl_context == nullptr) {
         Utils::showError("OpenGL context could not be created: ");
         return;
-      } else {
       }
       this->m_gl_initialized = true;
+      this->m_sdl_initialized = true;
     }
-
-    SDL_Surface* baseSurface = SDL_GetWindowSurface(this->m_window.get());
-    SDL_FillRect(baseSurface, NULL, SDL_MapRGB(baseSurface->format, 0x00, 0x00, 0x00));
-    this->m_sdl_initialized = true;
 
     SDL_Renderer* render = SDL_CreateRenderer(this->m_window.get(), -1,
                                               SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
     // Init renderer
-    this->m_renderer
-        = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(baseSurface, render));
+    this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(render));
 
     // Push initial state
     this->pushState<State::PlayingState>(*this);
