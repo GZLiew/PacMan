@@ -12,3 +12,7 @@ SDL_Surface* Utils::loadSDLSurface(const char* file) {
   }
   return loadedSurface;
 }
+
+SDL_Texture* Utils::loadSDLTexture(SDL_Renderer* renderer, const char* file) {
+  return SDL_CreateTextureFromSurface(renderer, loadSDLSurface(file));
+}

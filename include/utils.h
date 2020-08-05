@@ -8,8 +8,5 @@
 namespace Utils {
   void showError(std::string msg);
   SDL_Surface* loadSDLSurface(const char* file);
-
-  struct SDLWindowDeleter {
-    inline void operator()(SDL_Window* window) { SDL_DestroyWindow(window); }
-  };
+  SDL_Texture* loadSDLTexture(SDL_Renderer* renderer, const char* file);
 }  // namespace Utils
