@@ -1,28 +1,33 @@
 #pragma once
 
+#include <deleters.h>
 #include <entity.h>
 #include <input.h>
 #include <input/actions.h>
+#include <render/masterrenderer.h>
 #include <utils.h>
 
 #include <memory>
 #include <vector>
+
+#define PACMAN_ANIMATION_STATES 12
 
 namespace Objects {
   enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
 
   class Pacman : public Entity {
   public:
-    Pacman();
+    Pacman(std::shared_ptr<Render::MasterRenderer> renderer);
     void handleInput(std::shared_ptr<Input::Input> input);
     void update(float dt);
 
-    void draw(std::shared_ptr<SDL_Surface> base);
+    void draw();
 
   private:
     Direction m_direction = RIGHT;
     Direction m_next_direction = NONE;
-    std::vector<std::unique_ptr<SDL_Surface>> m_sprites;
+    std::vector<std::shared_ptr<SDL_Texture>> m_textures;
+    std::shared_ptr<Render::MasterRenderer> m_renderer;
     int m_animation_state = 0;
     float dt;
   };

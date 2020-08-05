@@ -9,10 +9,9 @@ Application::~Application() {
   this->m_states.clear();
   this->m_renderer.reset();
   this->m_window.reset();
-  this->m_base_surface.reset();
 }
 
-Application::Application(const Config &config) : m_config(config) {
+Application::Application(const Config& config) : m_config(config) {
   // Set openGL attributes
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -23,7 +22,7 @@ Application::Application(const Config &config) : m_config(config) {
     Utils::showError("SDL failed to initialize: ");
     this->m_sdl_initialized = false;
   } else {
-    this->m_window = std::unique_ptr<SDL_Window, Utils::SDLWindowDeleter>(SDL_CreateWindow(
+    this->m_window = std::unique_ptr<SDL_Window, SDL_WindowDeleter>(SDL_CreateWindow(
         "PacMan", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->m_config.windowX,
         this->m_config.windowY, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN));
 
@@ -43,29 +42,33 @@ Application::Application(const Config &config) : m_config(config) {
       this->m_gl_initialized = true;
     }
 
-    this->m_base_surface = std::shared_ptr<SDL_Surface>(SDL_GetWindowSurface(this->m_window.get()));
-    SDL_FillRect(this->m_base_surface.get(), NULL,
-                 SDL_MapRGB(this->m_base_surface->format, 0x00, 0x00, 0x00));
-
+    SDL_Surface* baseSurface = SDL_GetWindowSurface(this->m_window.get());
+    SDL_FillRect(baseSurface, NULL, SDL_MapRGB(baseSurface->format, 0x00, 0x00, 0x00));
     this->m_sdl_initialized = true;
 
+    SDL_Renderer* render = SDL_CreateRenderer(this->m_window.get(), -1,
+                                              SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
     // Init renderer
-    this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(this->m_base_surface));
+    this->m_renderer
+        = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(baseSurface, render));
 
     // Push initial state
     this->pushState<State::PlayingState>(*this);
   }
 }
 
-void Application::run_loop() {
+void Application::runLoop() {
   SDL_Event e;
   while (!this->m_states.empty()) {
-    auto &state = *this->m_states.back();
+    this->lockFps();
+
+    auto& state = *this->m_states.back();
     state.handleInput();
-    state.update(0.01);
+    state.update(this->m_config.dt);
 
     state.render(this->m_renderer);
-    this->m_renderer->finishRender(this->m_window.get());
+    this->m_renderer->finishRender();
 
     // Check input
     while (SDL_PollEvent(&e)) {
@@ -81,4 +84,15 @@ void Application::run_loop() {
   }
 }
 
-Config Application::get_config() { return this->m_config; }
+Config Application::getConfig() { return this->m_config; }
+
+std::shared_ptr<Render::MasterRenderer> Application::renderer() { return this->m_renderer; }
+
+void Application::lockFps() {
+  double dt = SDL_GetTicks();
+  dt = SDL_GetTicks() - dt;
+
+  if (dt < 1000 / this->m_config.frameRate) {
+    SDL_Delay((1000 / this->m_config.frameRate) - dt);
+  }
+}

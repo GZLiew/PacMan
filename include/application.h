@@ -2,12 +2,12 @@
 
 #include <SDL.h>
 #include <config.h>
+#include <deleters.h>
 #include <input/keyboard.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
 #include <state/playingstate.h>
 #include <stdio.h>
-#include <utils.h>
 
 #include <iostream>
 #include <memory>
@@ -22,10 +22,13 @@ public:
     auto& s = m_states.back();
     s->onOpen();
   }
-  void run_loop();
-  Config get_config();
+  void runLoop();
+  Config getConfig();
+  std::shared_ptr<Render::MasterRenderer> renderer();
 
 private:
+  void lockFps();
+
   bool m_sdl_initialized = false;
   bool m_window_created = false;
   bool m_gl_initialized = false;
@@ -36,6 +39,5 @@ private:
   std::vector<std::unique_ptr<State::BaseState>> m_states;
 
   std::shared_ptr<Render::MasterRenderer> m_renderer;
-  std::unique_ptr<SDL_Window, Utils::SDLWindowDeleter> m_window;
-  std::shared_ptr<SDL_Surface> m_base_surface;
+  std::unique_ptr<SDL_Window, SDL_WindowDeleter> m_window;
 };  // class Application

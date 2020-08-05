@@ -7,8 +7,8 @@ TEST_SUITE("Application") {
     Config config;
     Application app = Application(config);
 
-    CHECK(app.get_config().fullScreen == false);
-    CHECK(app.get_config().windowX == 800);
-    CHECK(app.get_config().windowY == 600);
+    CHECK(app.getConfig().fullScreen == false);
+    CHECK(app.getConfig().windowX == 800);
+    CHECK(app.getConfig().windowY == 600);
   }
 }
