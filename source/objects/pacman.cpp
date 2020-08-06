@@ -4,21 +4,21 @@ Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({32.0f, 32.0f}, {0.f, 0.f}, {1.f, 0.f}), m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
   this->m_textures[0] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman_1.bmp"),
+      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/1.bmp"),
       [](SDL_Texture *t) { SDL_DestroyTexture(t); });
   this->m_textures[1] = this->m_textures[0];
   this->m_textures[2] = this->m_textures[0];
   this->m_textures[3] = this->m_textures[0];
 
   this->m_textures[4] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman_2.bmp"),
+      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/2.bmp"),
       [](SDL_Texture *t) { SDL_DestroyTexture(t); });
   this->m_textures[5] = this->m_textures[4];
   this->m_textures[6] = this->m_textures[4];
   this->m_textures[7] = this->m_textures[4];
 
   this->m_textures[8] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman_3.bmp"),
+      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/3.bmp"),
       [](SDL_Texture *t) { SDL_DestroyTexture(t); });
   this->m_textures[9] = this->m_textures[8];
   this->m_textures[10] = this->m_textures[8];
