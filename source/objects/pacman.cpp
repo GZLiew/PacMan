@@ -38,9 +38,34 @@ void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
 }
 
 void Objects::Pacman::update(float dt) {
-  this->hitbox.update(this->hitbox.pos += this->velocity * dt);
+  // Update animation
   this->m_animation_state += 1;
   if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_animation_state = 0;
+
+  // Update directions
+  if (this->m_next_direction != this->m_direction) {
+    switch (this->m_next_direction) {
+      case UP:
+        this->velocity = {0.0, -1.0};
+        break;
+      case DOWN:
+        this->velocity = {0.0, 1.0};
+        break;
+      case LEFT:
+        this->velocity = {-1.0, 0.0};
+        break;
+      case RIGHT:
+        this->velocity = {1.0, 0.0};
+        break;
+      default:
+        break;
+    }
+    this->m_direction = this->m_next_direction;
+    this->m_next_direction = NONE;
+  }
+
+  // Update position
+  this->hitbox.update(this->hitbox.pos += this->velocity * dt);
 }
 
 void Objects::Pacman::draw() {
@@ -48,6 +73,26 @@ void Objects::Pacman::draw() {
   SDL_Rect renderQuad{(int)this->hitbox.pos.x, (int)this->hitbox.pos.y, (int)this->hitbox.dim.x,
                       (int)this->hitbox.dim.y};
 
-  SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_textures[state].get(), NULL,
-                   &renderQuad, 0, NULL, SDL_FLIP_NONE);
+  switch (this->m_direction) {
+    case UP:
+      SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_textures[state].get(), NULL,
+                       &renderQuad, 90, NULL, SDL_FLIP_HORIZONTAL);
+      break;
+    case DOWN:
+      SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_textures[state].get(), NULL,
+                       &renderQuad, 90, NULL, SDL_FLIP_NONE);
+      break;
+    case LEFT:
+      SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_textures[state].get(), NULL,
+                       &renderQuad, 0, NULL, SDL_FLIP_HORIZONTAL);
+      break;
+    case RIGHT:
+      SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_textures[state].get(), NULL,
+                       &renderQuad, 0, NULL, SDL_FLIP_NONE);
+      break;
+    default:
+      SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_textures[state].get(), NULL,
+                       &renderQuad, 0, NULL, SDL_FLIP_NONE);
+      break;
+  }
 }
