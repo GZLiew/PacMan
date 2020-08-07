@@ -1,7 +1,7 @@
 #include <objects/pacman.h>
 
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
-    : Entity({32.0f, 32.0f}, {0.f, 0.f}, {1.f, 0.f}), m_renderer(renderer) {
+    : Entity({32.0f, 32.0f}, {13.5 * 16.f, 25 * 16.f}, {0.f, 0.f}), m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
   this->m_textures[0] = std::shared_ptr<SDL_Texture>(
       Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/1.bmp"),
@@ -70,7 +70,7 @@ void Objects::Pacman::update(float dt) {
 
 void Objects::Pacman::draw() {
   int state = this->m_animation_state % PACMAN_ANIMATION_STATES;
-  SDL_Rect renderQuad{(int)this->hitbox.pos.x, (int)this->hitbox.pos.y, (int)this->hitbox.dim.x,
+  SDL_Rect renderQuad{(int)(this->hitbox.pos.x - this->hitbox.dim.x/4), (int)(this->hitbox.pos.y - this->hitbox.dim.y/4), (int)this->hitbox.dim.x,
                       (int)this->hitbox.dim.y};
 
   switch (this->m_direction) {

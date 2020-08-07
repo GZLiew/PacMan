@@ -10,6 +10,8 @@ SDL_Surface* Utils::loadSDLSurface(const char* file) {
   if (loadedSurface == NULL) {
     showError("");
   }
+
+  SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0, 0));
   return loadedSurface;
 }
 

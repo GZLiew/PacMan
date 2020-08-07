@@ -6,9 +6,6 @@
 #include <objects/pacman.h>
 #include <vector>
 
-#define LEVEL_MATRIX_HEIGHT 36;
-#define LEVEL_MATRIX_WIDTH 28;
-
 namespace Objects {
   class Level : public Entity {
   public:
