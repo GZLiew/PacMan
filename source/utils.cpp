@@ -16,3 +16,9 @@ SDL_Surface* Utils::loadSDLSurface(const char* file) {
 SDL_Texture* Utils::loadSDLTexture(SDL_Renderer* renderer, const char* file) {
   return SDL_CreateTextureFromSurface(renderer, loadSDLSurface(file));
 }
+
+int Utils::getTens(int num) {
+  int len = log10(num);
+  float div = pow(10, len);
+  return floor(num / div) * div;
+} 
