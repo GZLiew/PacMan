@@ -48,11 +48,11 @@ Objects::Wall::Wall(Type t, const glm::vec2& pos, std::shared_ptr<Render::Master
     case VERTICAL:
       break;
     case HORIZONTAL_UP:
-      this->m_degree = 90;
-      this->m_flip_type = SDL_FLIP_HORIZONTAL;
+      this->m_degree = 270;
       break;
     case HORIZONTAL_DOWN:
       this->m_degree = 90;
+      this->m_flip_type = SDL_FLIP_VERTICAL;
       break;
     case VERTICAL_RIGHT:
       break;

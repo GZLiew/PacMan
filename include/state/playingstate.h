@@ -3,6 +3,7 @@
 #include <application.h>
 #include <input/keyboard.h>
 #include <objects/pacman.h>
+#include <objects/level.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
 
@@ -25,6 +26,7 @@ namespace State {
 
   private:
     std::shared_ptr<Input::Input> m_input;
+    Objects::Level m_level;
     Objects::Pacman m_pacman;
   };
 }  // namespace State
