@@ -73,6 +73,6 @@ Objects::Wall::Wall(Type t, const glm::vec2& pos, std::shared_ptr<Render::Master
 void Objects::Wall::draw() {
   SDL_Rect renderQuad{(int)this->position.x, (int)this->position.y, (int)this->dimension.x,
                       (int)this->dimension.y};
-  SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_texture.get(), NULL,
-                    &renderQuad, this->m_degree, NULL, this->m_flip_type);
+  SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_texture.get(), NULL, &renderQuad,
+                   this->m_degree, NULL, this->m_flip_type);
 }

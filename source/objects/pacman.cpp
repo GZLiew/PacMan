@@ -41,7 +41,7 @@ void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
 
 void Objects::Pacman::update(float dt) {
   // Update animation
-  if(!this->m_stuck) this->m_animation_state += 1;
+  if (!this->m_stuck) this->m_animation_state += 1;
   if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_animation_state = 0;
 
   // Update position
@@ -51,7 +51,7 @@ void Objects::Pacman::update(float dt) {
 
 void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
   // Check if next direction can be taken
-  if(std::count(directions.begin(), directions.end(), this->m_next_direction)){
+  if (std::count(directions.begin(), directions.end(), this->m_next_direction)) {
     switch (this->m_next_direction) {
       case UP:
         this->velocity = {0.0, -1.0};
@@ -77,8 +77,8 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
         break;
     }
     this->m_stuck = false;
-  // If not, check if current direction can be taken
-  } else if(!std::count(directions.begin(), directions.end(), this->m_direction)){
+    // If not, check if current direction can be taken
+  } else if (!std::count(directions.begin(), directions.end(), this->m_direction)) {
     this->velocity = {0.0, 0.0};
     this->m_next_direction = NONE;
     this->m_stuck = true;
@@ -87,9 +87,7 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
 
 void Objects::Pacman::draw() {
   int state = this->m_animation_state % PACMAN_ANIMATION_STATES;
-  SDL_Rect renderQuad{(int)(this->position.x),
-                      (int)(this->position.y),
-                      (int)this->dimension.x,
+  SDL_Rect renderQuad{(int)(this->position.x), (int)(this->position.y), (int)this->dimension.x,
                       (int)this->dimension.y};
 
   switch (this->m_direction) {
@@ -115,9 +113,8 @@ void Objects::Pacman::draw() {
       break;
   }
 
-  SDL_Rect renderQuad2{(int)(this->hitbox.pos.x),
-                       (int)(this->hitbox.pos.y), (int)this->hitbox.dim.x,
-                       (int)this->hitbox.dim.y};
+  SDL_Rect renderQuad2{(int)(this->hitbox.pos.x), (int)(this->hitbox.pos.y),
+                       (int)this->hitbox.dim.x, (int)this->hitbox.dim.y};
 
   SDL_SetRenderDrawColor(this->m_renderer->renderer().get(), 220, 20, 60, 1);
   SDL_RenderDrawRect(this->m_renderer->renderer().get(), &renderQuad2);

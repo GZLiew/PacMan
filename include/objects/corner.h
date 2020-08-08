@@ -1,7 +1,7 @@
 #pragma once
 
-#include <objects/pacman.h>
 #include <entity.h>
+#include <objects/pacman.h>
 
 namespace Objects {
   class Corner : public Entity {

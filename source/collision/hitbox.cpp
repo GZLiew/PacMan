@@ -6,8 +6,6 @@ bool Collision::Hitbox::collide(Hitbox &other) const {
 }
 
 bool Collision::Hitbox::equal(Hitbox &other) const {
-  return pos.x == other.pos.x &&
-         pos.y == other.pos.y &&
-         dim.x == other.dim.x &&
-         dim.y == other.dim.y;
+  return pos.x == other.pos.x && pos.y == other.pos.y && dim.x == other.dim.x
+         && dim.y == other.dim.y;
 }
