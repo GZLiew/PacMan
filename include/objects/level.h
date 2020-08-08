@@ -1,5 +1,6 @@
 #pragma once
 
+#include <objects/corner.h>
 #include <objects/pacman.h>
 #include <objects/points10.h>
 #include <objects/points50.h>
@@ -18,6 +19,7 @@ namespace Objects {
     std::vector<std::shared_ptr<Points50>> getPoints50();
 
   private:
+    std::vector<std::shared_ptr<Corner>> m_corners;
     std::vector<std::shared_ptr<Wall>> m_walls;
     std::vector<std::shared_ptr<Points10>> m_points10;
     std::vector<std::shared_ptr<Points50>> m_points50;

@@ -23,4 +23,4 @@ int Utils::getTens(int num) {
   int len = log10(num);
   float div = pow(10, len);
   return floor(num / div) * div;
-} 
+}

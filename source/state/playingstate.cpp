@@ -1,7 +1,7 @@
 #include <state/playingstate.h>
 
 State::PlayingState::PlayingState(Application &app)
-    : State::BaseState(app), m_pacman(app.renderer()), m_level({ 0.f, 2 * 16.f }, app.renderer()) {
+    : State::BaseState(app), m_pacman(app.renderer()), m_level({0.f, 0.f}, app.renderer()) {
   this->m_input
       = std::shared_ptr<Input::Input>(new Input::Keyboard({{Input::Action::CONFIRM, SDLK_RETURN},
                                                            {Input::Action::DECLINE, SDLK_ESCAPE},

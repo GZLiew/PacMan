@@ -1,8 +1,11 @@
 #include <collision/hitbox.h>
 
-void Collision::Hitbox::update(glm::vec2 pos) { this->pos = pos; }
-
 bool Collision::Hitbox::collide(Hitbox &other) const {
-  return pos.x <= other.pos.x + other.dim.x/4 && pos.x + dim.x/4 >= other.pos.x
-         && pos.y <= other.pos.y + other.dim.y/4 && pos.y + dim.y/4 >= other.pos.y;
+  return pos.x <= other.pos.x + other.dim.x && pos.x + dim.x >= other.pos.x
+         && pos.y <= other.pos.y + other.dim.y && pos.y + dim.y >= other.pos.y;
+}
+
+bool Collision::Hitbox::within(Hitbox &other) const {
+  return (pos.x + dim.x) - other.pos.x >=0 && (other.pos.x + other.dim.x) - pos.x >= 0
+          && (pos.y + dim.y) - other.pos.y >=0 && (other.pos.y + other.dim.y) - pos.y >= 0;
 }

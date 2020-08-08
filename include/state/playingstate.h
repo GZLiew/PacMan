@@ -2,8 +2,8 @@
 
 #include <application.h>
 #include <input/keyboard.h>
-#include <objects/pacman.h>
 #include <objects/level.h>
+#include <objects/pacman.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
 
