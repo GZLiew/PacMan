@@ -1,8 +1,8 @@
 #include <objects/pacman.h>
 
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
-    : Entity({32.0f, 32.0f}, {15 * 16.f, 27.5 * 16.f}, {0.f, 0.f},
-             Collision::Hitbox({16.0f, 16.0f}, {15 * 16.f - 8, 27.5 * 16.f - 8})),
+    : Entity({32.0f, 32.0f}, {15 * 16.f - 8, 26 * 16.f - 8}, {0.f, 0.f},
+             Collision::Hitbox({16.0f, 16.0f}, {15 * 16.f, 26 * 16.f})),
       m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
   this->m_textures[0] = std::shared_ptr<SDL_Texture>(
@@ -41,77 +41,55 @@ void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
 
 void Objects::Pacman::update(float dt) {
   // Update animation
-  this->m_animation_state += 1;
+  if(!this->m_stuck) this->m_animation_state += 1;
   if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_animation_state = 0;
-
-  /*
-  double y = this->hitbox.pos.y;
-  double x = this->hitbox.pos.x;
-
-  switch (this->m_next_direction) {
-    case UP:
-      if (mtrx[((y - 1) / 16)][(x / 16)]) {
-        this->velocity = {0.0, -1.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
-      break;
-    case DOWN:
-      if (mtrx[((y) / 16) + 1][((x) / 16)]) {
-        this->velocity = {0.0, 1.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
-      break;
-    case LEFT:
-      if (mtrx[(y) / 16][((x - 1) / 16)]) {
-        this->velocity = {-1.0, 0.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
-      break;
-    case RIGHT:
-      if (mtrx[((y) / 16)][(x / 16) + 1]) {
-        this->velocity = {1.0, 0.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
-      break;
-  }
-  */
-
-  switch (this->m_next_direction) {
-    case UP:
-      this->velocity = {0.0, -1.0};
-      this->m_direction = this->m_next_direction;
-      this->m_next_direction = NONE;
-      break;
-    case DOWN:
-      this->velocity = {0.0, 1.0};
-      this->m_direction = this->m_next_direction;
-      this->m_next_direction = NONE;
-      break;
-    case LEFT:
-      this->velocity = {-1.0, 0.0};
-      this->m_direction = this->m_next_direction;
-      this->m_next_direction = NONE;
-      break;
-    case RIGHT:
-      this->velocity = {1.0, 0.0};
-      this->m_direction = this->m_next_direction;
-      this->m_next_direction = NONE;
-      break;
-  }
 
   // Update position
   this->position += this->velocity * dt;
   this->hitbox.pos += this->velocity * dt;
 }
 
+void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
+  // Check if next direction can be taken
+  if(std::count(directions.begin(), directions.end(), this->m_next_direction)){
+    switch (this->m_next_direction) {
+      case UP:
+        this->velocity = {0.0, -1.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+        break;
+      case DOWN:
+        this->velocity = {0.0, 1.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+        break;
+      case LEFT:
+        this->velocity = {-1.0, 0.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+        break;
+      case RIGHT:
+        this->velocity = {1.0, 0.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+        break;
+      default:
+        break;
+    }
+    this->m_stuck = false;
+  // If not, check if current direction can be taken
+  } else if(!std::count(directions.begin(), directions.end(), this->m_direction)){
+    this->velocity = {0.0, 0.0};
+    this->m_next_direction = NONE;
+    this->m_stuck = true;
+  }
+}
+
 void Objects::Pacman::draw() {
   int state = this->m_animation_state % PACMAN_ANIMATION_STATES;
-  SDL_Rect renderQuad{(int)(this->position.x - this->dimension.x),
-                      (int)(this->position.y - this->dimension.y), (int)this->dimension.x,
+  SDL_Rect renderQuad{(int)(this->position.x),
+                      (int)(this->position.y),
+                      (int)this->dimension.x,
                       (int)this->dimension.y};
 
   switch (this->m_direction) {
@@ -137,8 +115,8 @@ void Objects::Pacman::draw() {
       break;
   }
 
-  SDL_Rect renderQuad2{(int)(this->hitbox.pos.x - this->hitbox.dim.x),
-                       (int)(this->hitbox.pos.y - this->hitbox.dim.y), (int)this->hitbox.dim.x,
+  SDL_Rect renderQuad2{(int)(this->hitbox.pos.x),
+                       (int)(this->hitbox.pos.y), (int)this->hitbox.dim.x,
                        (int)this->hitbox.dim.y};
 
   SDL_SetRenderDrawColor(this->m_renderer->renderer().get(), 220, 20, 60, 1);

@@ -9,7 +9,6 @@
 #include <state/playingstate.h>
 #include <stdio.h>
 
-#include <iostream>
 #include <memory>
 #include <vector>
 

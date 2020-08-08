@@ -18,6 +18,11 @@ void State::PlayingState::handleEvent(SDL_Event &e) { this->m_input->update(e); 
 void State::PlayingState::handleInput() { this->m_pacman.handleInput(this->m_input); }
 
 void State::PlayingState::update(float dt) {
+  for(auto corner : this->m_level.getCorners()) {
+    if(corner->hitbox.equal(this->m_pacman.hitbox))
+      this->m_pacman.checkDirection(corner->directions());
+  }
+  
   this->m_pacman.update(dt);
 }
 

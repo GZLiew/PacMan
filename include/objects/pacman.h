@@ -7,6 +7,7 @@
 #include <render/masterrenderer.h>
 #include <utils.h>
 
+#include <algorithm>
 #include <memory>
 #include <vector>
 
@@ -20,6 +21,7 @@ namespace Objects {
     Pacman(std::shared_ptr<Render::MasterRenderer> renderer);
     void handleInput(std::shared_ptr<Input::Input> input);
     void update(float dt);
+    void checkDirection(std::vector<Direction> directions);
 
     void draw();
 
@@ -28,6 +30,7 @@ namespace Objects {
     Direction m_next_direction = NONE;
     std::vector<std::shared_ptr<SDL_Texture>> m_textures;
     std::shared_ptr<Render::MasterRenderer> m_renderer;
+    bool m_stuck = false;
     int m_animation_state = 0;
     float dt;
   };
