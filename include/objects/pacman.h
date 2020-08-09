@@ -26,12 +26,16 @@ namespace Objects {
     void draw();
 
   private:
+    void changeDirection(Direction dir);
+    void updateVelocity(glm::vec2 vel);
+
     Direction m_direction = RIGHT;
     Direction m_next_direction = NONE;
     std::vector<std::shared_ptr<SDL_Texture>> m_textures;
     std::shared_ptr<Render::MasterRenderer> m_renderer;
-    bool m_stuck = false;
-    int m_animation_state = 0;
+    bool m_initially_stuck = true;
+    bool m_stuck = true;
+    int m_animation_state = 9;
     float dt;
   };
 }  // namespace Objects

@@ -1,8 +1,9 @@
 #include <objects/pacman.h>
+#include <iostream>
 
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
-    : Entity({32.0f, 32.0f}, {15 * 16.f - 8, 26 * 16.f - 8}, {0.f, 0.f},
-             Collision::Hitbox({16.0f, 16.0f}, {15 * 16.f, 26 * 16.f})),
+    : Entity({32.0f, 32.0f}, {13.5 * 16.f - 8, 26 * 16.f - 8}, {0.f, 0.f},
+             Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
       m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
   this->m_textures[0] = std::shared_ptr<SDL_Texture>(
@@ -40,40 +41,31 @@ void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
 }
 
 void Objects::Pacman::update(float dt) {
+  if(this->m_initially_stuck && this->m_direction == this->m_next_direction){
+    this->changeDirection(this->m_next_direction);
+    this->m_initially_stuck = false;
+  }
   // Check if Pacman can go back
   switch (this->m_next_direction) {
     case UP:
-      if (this->m_direction == DOWN) {
-        this->velocity = {0.0, -1.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
+      if (this->m_direction == DOWN)
+        this->changeDirection(UP);
       break;
     case DOWN:
-      if (this->m_direction == UP) {
-        this->velocity = {0.0, 1.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
+      if (this->m_direction == UP)
+        this->changeDirection(DOWN);
       break;
     case LEFT:
-      if (this->m_direction == RIGHT) {
-        this->velocity = {-1.0, 0.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
+      if (this->m_direction == RIGHT)
+        this->changeDirection(LEFT);
       break;
     case RIGHT:
-      if (this->m_direction == LEFT) {
-        this->velocity = {1.0, 0.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-      }
+      if (this->m_direction == LEFT)
+        this->changeDirection(RIGHT);
       break;
     default:
       break;
   }
-
   // Update animation
   if (!this->m_stuck) this->m_animation_state += 1;
   if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_animation_state = 0;
@@ -86,37 +78,12 @@ void Objects::Pacman::update(float dt) {
 void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
   // Check if next direction can be taken
   if (std::count(directions.begin(), directions.end(), this->m_next_direction)) {
-    switch (this->m_next_direction) {
-      case UP:
-        this->velocity = {0.0, -1.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-        break;
-      case DOWN:
-        this->velocity = {0.0, 1.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-        break;
-      case LEFT:
-        this->velocity = {-1.0, 0.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-        break;
-      case RIGHT:
-        this->velocity = {1.0, 0.0};
-        this->m_direction = this->m_next_direction;
-        this->m_next_direction = NONE;
-        break;
-      default:
-        break;
-    }
-    this->m_stuck = false;
-    // If not, check if current direction can be taken
+    changeDirection(this->m_next_direction);
+  // If not, check if current direction cant be taken and set pacman stuck
   } else if (!std::count(directions.begin(), directions.end(), this->m_direction)) {
-    this->velocity = {0.0, 0.0};
-    this->m_next_direction = NONE;
     this->m_stuck = true;
-  }
+    this->updateVelocity({0.0, 0.0});
+  } 
 }
 
 void Objects::Pacman::draw() {
@@ -149,7 +116,30 @@ void Objects::Pacman::draw() {
 
   SDL_Rect renderQuad2{(int)(this->hitbox.pos.x), (int)(this->hitbox.pos.y),
                        (int)this->hitbox.dim.x, (int)this->hitbox.dim.y};
+}
 
-  SDL_SetRenderDrawColor(this->m_renderer->renderer().get(), 220, 20, 60, 1);
-  SDL_RenderDrawRect(this->m_renderer->renderer().get(), &renderQuad2);
+void Objects::Pacman::changeDirection(Direction dir) {
+  switch (dir) {
+    case UP:
+      this->updateVelocity({0.0, -1.0});
+      break;
+    case DOWN:
+      this->updateVelocity({0.0, 1.0});
+      break;
+    case LEFT:
+      this->updateVelocity({-1.0, 0.0});
+      break;
+    case RIGHT:
+      this->updateVelocity({1.0, 0.0});
+      break;
+    default:
+      break;
+  }
+  this->m_direction = this->m_next_direction;
+  this->m_next_direction = NONE;
+  this->m_stuck = false;
+}
+
+void Objects::Pacman::updateVelocity(glm::vec2 vel) {
+  this->velocity = vel;
 }
