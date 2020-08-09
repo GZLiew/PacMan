@@ -1,4 +1,5 @@
 #include <objects/pacman.h>
+
 #include <iostream>
 
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
@@ -41,27 +42,23 @@ void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
 }
 
 void Objects::Pacman::update(float dt) {
-  if(this->m_initially_stuck && this->m_direction == this->m_next_direction){
+  if (this->m_initially_stuck && this->m_direction == this->m_next_direction) {
     this->changeDirection(this->m_next_direction);
     this->m_initially_stuck = false;
   }
   // Check if Pacman can go back
   switch (this->m_next_direction) {
     case UP:
-      if (this->m_direction == DOWN)
-        this->changeDirection(UP);
+      if (this->m_direction == DOWN) this->changeDirection(UP);
       break;
     case DOWN:
-      if (this->m_direction == UP)
-        this->changeDirection(DOWN);
+      if (this->m_direction == UP) this->changeDirection(DOWN);
       break;
     case LEFT:
-      if (this->m_direction == RIGHT)
-        this->changeDirection(LEFT);
+      if (this->m_direction == RIGHT) this->changeDirection(LEFT);
       break;
     case RIGHT:
-      if (this->m_direction == LEFT)
-        this->changeDirection(RIGHT);
+      if (this->m_direction == LEFT) this->changeDirection(RIGHT);
       break;
     default:
       break;
@@ -79,11 +76,11 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
   // Check if next direction can be taken
   if (std::count(directions.begin(), directions.end(), this->m_next_direction)) {
     changeDirection(this->m_next_direction);
-  // If not, check if current direction cant be taken and set pacman stuck
+    // If not, check if current direction cant be taken and set pacman stuck
   } else if (!std::count(directions.begin(), directions.end(), this->m_direction)) {
     this->m_stuck = true;
     this->updateVelocity({0.0, 0.0});
-  } 
+  }
 }
 
 void Objects::Pacman::draw() {
@@ -140,6 +137,4 @@ void Objects::Pacman::changeDirection(Direction dir) {
   this->m_stuck = false;
 }
 
-void Objects::Pacman::updateVelocity(glm::vec2 vel) {
-  this->velocity = vel;
-}
+void Objects::Pacman::updateVelocity(glm::vec2 vel) { this->velocity = vel; }
