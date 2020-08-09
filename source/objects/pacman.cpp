@@ -40,6 +40,40 @@ void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
 }
 
 void Objects::Pacman::update(float dt) {
+  // Check if Pacman can go back
+  switch (this->m_next_direction) {
+    case UP:
+      if (this->m_direction == DOWN) {
+        this->velocity = {0.0, -1.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+      }
+      break;
+    case DOWN:
+      if (this->m_direction == UP) {
+        this->velocity = {0.0, 1.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+      }
+      break;
+    case LEFT:
+      if (this->m_direction == RIGHT) {
+        this->velocity = {-1.0, 0.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+      }
+      break;
+    case RIGHT:
+      if (this->m_direction == LEFT) {
+        this->velocity = {1.0, 0.0};
+        this->m_direction = this->m_next_direction;
+        this->m_next_direction = NONE;
+      }
+      break;
+    default:
+      break;
+  }
+
   // Update animation
   if (!this->m_stuck) this->m_animation_state += 1;
   if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_animation_state = 0;
