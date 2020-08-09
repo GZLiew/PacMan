@@ -22,7 +22,12 @@ void State::PlayingState::update(float dt) {
     if (corner->hitbox.equal(this->m_pacman.hitbox))
       this->m_pacman.checkDirection(corner->directions());
   }
-
+  for (auto pelet : this->m_level.getPoints10()) {
+    if (pelet->hitbox.collide(this->m_pacman.hitbox)) pelet->eat();
+  }
+  for (auto pelet50 : this->m_level.getPoints50()) {
+    if (pelet50->hitbox.collide(this->m_pacman.hitbox)) pelet50->eat();
+  }
   this->m_pacman.update(dt);
 }
 
