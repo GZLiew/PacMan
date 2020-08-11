@@ -4,6 +4,7 @@
 #include <input/keyboard.h>
 #include <objects/level.h>
 #include <objects/pacman.h>
+#include <objects/score.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
 
@@ -28,5 +29,6 @@ namespace State {
     std::shared_ptr<Input::Input> m_input;
     Objects::Level m_level;
     Objects::Pacman m_pacman;
+    Objects::Score m_score;
   };
 }  // namespace State

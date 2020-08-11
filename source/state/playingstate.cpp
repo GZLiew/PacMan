@@ -1,7 +1,7 @@
 #include <state/playingstate.h>
 
 State::PlayingState::PlayingState(Application &app)
-    : State::BaseState(app), m_pacman(app.renderer()), m_level({0.f, 0.f}, app.renderer()) {
+    : State::BaseState(app), m_pacman(app.renderer()), m_level({0.f, 0.f}, app.renderer()), m_score(app.renderer()) {
   this->m_input
       = std::shared_ptr<Input::Input>(new Input::Keyboard({{Input::Action::CONFIRM, SDLK_RETURN},
                                                            {Input::Action::DECLINE, SDLK_ESCAPE},
@@ -23,10 +23,16 @@ void State::PlayingState::update(float dt) {
       this->m_pacman.checkDirection(corner->directions());
   }
   for (auto pelet : this->m_level.getPoints10()) {
-    if (pelet->hitbox.collide(this->m_pacman.hitbox)) pelet->eat();
+    if (!pelet->isEaten() && pelet->hitbox.collide(this->m_pacman.hitbox)) {
+      pelet->eat();
+      this->m_score.add(10);
+    }
   }
   for (auto pelet50 : this->m_level.getPoints50()) {
-    if (pelet50->hitbox.collide(this->m_pacman.hitbox)) pelet50->eat();
+    if (!pelet50->isEaten() && pelet50->hitbox.collide(this->m_pacman.hitbox)) {
+      pelet50->eat();
+      this->m_score.add(50);
+    }
   }
   this->m_pacman.update(dt);
 }
@@ -35,6 +41,7 @@ void State::PlayingState::render(std::shared_ptr<Render::MasterRenderer> rendere
   renderer->clearSurface();
   this->m_level.draw();
   this->m_pacman.draw();
+  this->m_score.draw();
 }
 
 void State::PlayingState::onOpen() {}

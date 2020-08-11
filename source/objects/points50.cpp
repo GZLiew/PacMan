@@ -8,10 +8,12 @@ Objects::Points50::Points50(const glm::vec2& pos, std::shared_ptr<Render::Master
       Utils::loadSDLTexture(renderer->renderer().get(), "resources/score/50pts.bmp"));
 }
 
-void Objects::Points50::eat() { this->eaten = true; }
+void Objects::Points50::eat() { this->m_eaten = true; }
+
+bool Objects::Points50::isEaten() { return this->m_eaten; }
 
 void Objects::Points50::draw() {
-  if (this->eaten) return;
+  if (this->m_eaten) return;
 
   SDL_Rect renderQuad{(int)this->position.x, (int)this->position.y, (int)this->dimension.x,
                       (int)this->dimension.y};

@@ -8,10 +8,12 @@ Objects::Points10::Points10(const glm::vec2& pos, std::shared_ptr<Render::Master
       Utils::loadSDLTexture(renderer->renderer().get(), "resources/score/10pts.bmp"));
 }
 
-void Objects::Points10::eat() { this->eaten = true; }
+void Objects::Points10::eat() { this->m_eaten = true; }
+
+bool Objects::Points10::isEaten() { return this->m_eaten; }
 
 void Objects::Points10::draw() {
-  if (this->eaten) return;
+  if (this->m_eaten) return;
 
   SDL_Rect renderQuad{(int)this->position.x, (int)this->position.y, (int)this->dimension.x,
                       (int)this->dimension.y};
