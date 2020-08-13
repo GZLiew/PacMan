@@ -40,14 +40,14 @@ CPMAddPackage(
 )
 
 CPMAddPackage(
-  NAME SDL2_Ttf
+  NAME SDL2_ttf
   VERSION 2.0.15
   URL https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.zip
   DOWNLOAD_ONLY TRUE
 )
 
 CPMAddPackage(
-  NAME SDL2_Mixer
+  NAME SDL2_mixer
   VERSION 2.0.15
   URL https://libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.zip
   DOWNLOAD_ONLY TRUE
@@ -71,12 +71,12 @@ target_include_directories(PacMan
 
 target_include_directories(PacMan
   PUBLIC
-    $<BUILD_INTERFACE:${SDL2_Ttf_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${SDL2_ttf_SOURCE_DIR}>
 )
 
 target_include_directories(PacMan
   PUBLIC
-    $<BUILD_INTERFACE:${SDL2_Mixer_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${SDL2_mixer_SOURCE_DIR}>
 )
 
 target_include_directories(PacMan PRIVATE ${SDL2_SOURCE_DIR}/include)
