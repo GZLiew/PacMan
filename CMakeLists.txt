@@ -39,6 +39,20 @@ CPMAddPackage(
   URL https://libsdl.org/release/SDL2-2.0.12.zip
 )
 
+CPMAddPackage(
+  NAME SDL2_Ttf
+  VERSION 2.0.15
+  URL https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.zip
+  DOWNLOAD_ONLY TRUE
+)
+
+CPMAddPackage(
+  NAME SDL2_Mixer
+  VERSION 2.0.15
+  URL https://libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.zip
+  DOWNLOAD_ONLY TRUE
+)
+
 # ---- Add source files ----
 FILE(GLOB headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/**/*.h)
 FILE(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.cpp)
@@ -53,6 +67,16 @@ target_include_directories(PacMan
   PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
+)
+
+target_include_directories(PacMan
+  PUBLIC
+    $<BUILD_INTERFACE:${SDL2_Ttf_SOURCE_DIR}>
+)
+
+target_include_directories(PacMan
+  PUBLIC
+    $<BUILD_INTERFACE:${SDL2_Mixer_SOURCE_DIR}>
 )
 
 target_include_directories(PacMan PRIVATE ${SDL2_SOURCE_DIR}/include)
