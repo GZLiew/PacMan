@@ -1,16 +1,5 @@
 #include <application.h>
 
-Application::~Application() {
-  if (this->m_gl_initialized) SDL_GL_DeleteContext(this->m_gl_context);
-  if (this->m_sdl_initialized) {
-    if (this->m_window_created) this->m_window.reset();
-    SDL_Quit();
-  }
-  this->m_states.clear();
-  this->m_renderer.reset();
-  this->m_window.reset();
-}
-
 Application::Application(const Config& config) : m_config(config) {
   // Set openGL attributes
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -42,6 +31,14 @@ Application::Application(const Config& config) : m_config(config) {
       this->m_sdl_initialized = true;
     }
 
+    TTF_Init();
+    if (TTF_Init() == -1) {
+      Utils::showError("SDL failed to initialize: ");
+      this->m_ttf_initialized = false;
+    } else {
+      this->m_ttf_initialized = true;
+    }
+
     SDL_Renderer* render = SDL_CreateRenderer(this->m_window.get(), -1,
                                               SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     // Init renderer
@@ -50,6 +47,20 @@ Application::Application(const Config& config) : m_config(config) {
     // Push initial state
     this->pushState<State::PlayingState>(*this);
   }
+}
+
+Application::~Application() {
+  if (this->m_ttf_initialized) {
+    TTF_Quit();
+  }
+  if (this->m_gl_initialized) SDL_GL_DeleteContext(this->m_gl_context);
+  if (this->m_sdl_initialized) {
+    if (this->m_window_created) this->m_window.reset();
+    SDL_Quit();
+  }
+  this->m_states.clear();
+  this->m_renderer.reset();
+  this->m_window.reset();
 }
 
 void Application::runLoop() {

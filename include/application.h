@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <config.h>
 #include <deleters.h>
 #include <input/keyboard.h>
@@ -31,6 +32,7 @@ private:
   bool m_sdl_initialized = false;
   bool m_window_created = false;
   bool m_gl_initialized = false;
+  bool m_ttf_initialized = false;
   const Config& m_config;
 
   SDL_GLContext m_gl_context;
