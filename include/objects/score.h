@@ -14,6 +14,7 @@ namespace Objects {
 
   private:
     int m_amount = 0;
+    int m_highScore = 0;
     std::shared_ptr<Render::MasterRenderer> m_renderer;
   };
-}  // namespace Objects!pelet50->isEaten()
+}  // namespace Objects
