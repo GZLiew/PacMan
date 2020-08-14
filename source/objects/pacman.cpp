@@ -110,9 +110,6 @@ void Objects::Pacman::draw() {
                        &renderQuad, 0, NULL, SDL_FLIP_NONE);
       break;
   }
-
-  SDL_Rect renderQuad2{(int)(this->hitbox.pos.x), (int)(this->hitbox.pos.y),
-                       (int)this->hitbox.dim.x, (int)this->hitbox.dim.y};
 }
 
 void Objects::Pacman::changeDirection(Direction dir) {

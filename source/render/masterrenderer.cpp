@@ -2,8 +2,8 @@
 
 Render::MasterRenderer::MasterRenderer(SDL_Renderer* renderer)
     : m_renderer(renderer, [](SDL_Renderer* t) { SDL_DestroyRenderer(t); }) {
-      this->m_text_renderer = std::unique_ptr<TextRenderer>(new TextRenderer(m_renderer));
-    }
+  this->m_text_renderer = std::unique_ptr<TextRenderer>(new TextRenderer(m_renderer));
+}
 
 void Render::MasterRenderer::finishRender() { SDL_RenderPresent(this->m_renderer.get()); }
 

@@ -1,11 +1,11 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <deleters.h>
+
 #include <map>
 #include <memory>
 #include <vector>
-
-#include <deleters.h>
 
 namespace Render {
   class TextRenderer {
@@ -16,6 +16,6 @@ namespace Render {
   private:
     SDL_Color white = {255, 255, 255, 255};
     std::shared_ptr<SDL_Renderer> m_renderer;
-    std::map<int, std::unique_ptr<TTF_Font, TTF_FontDeleter>> m_fonts; 
+    std::map<int, std::unique_ptr<TTF_Font, TTF_FontDeleter>> m_fonts;
   };
 }  // namespace Render
