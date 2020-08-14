@@ -7,6 +7,6 @@ struct Config {
   int windowX = LEVEL_MATRIX_WIDTH * 16;
   int windowY = LEVEL_MATRIX_HEIGHT * 16;
   int fullScreen = false;
-  int frameRate = 60;
-  double dt = 1;
+  int frameRate = 120;
+  double dt = 1.0;
 };

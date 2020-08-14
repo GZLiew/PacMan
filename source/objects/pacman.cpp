@@ -1,7 +1,5 @@
 #include <objects/pacman.h>
 
-#include <iostream>
-
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({32.0f, 32.0f}, {13.5 * 16.f - 8, 26 * 16.f - 8}, {0.f, 0.f},
              Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
@@ -13,20 +11,24 @@ Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
   this->m_textures[1] = this->m_textures[0];
   this->m_textures[2] = this->m_textures[0];
   this->m_textures[3] = this->m_textures[0];
+  this->m_textures[4] = this->m_textures[0];
 
-  this->m_textures[4] = std::shared_ptr<SDL_Texture>(
+  this->m_textures[5] = std::shared_ptr<SDL_Texture>(
       Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/2.bmp"),
       [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  this->m_textures[5] = this->m_textures[4];
-  this->m_textures[6] = this->m_textures[4];
-  this->m_textures[7] = this->m_textures[4];
+  this->m_textures[6] = this->m_textures[5];
+  this->m_textures[7] = this->m_textures[5];
+  this->m_textures[8] = this->m_textures[5];
+  this->m_textures[9] = this->m_textures[5];
 
-  this->m_textures[8] = std::shared_ptr<SDL_Texture>(
+  this->m_textures[10] = std::shared_ptr<SDL_Texture>(
       Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/3.bmp"),
       [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  this->m_textures[9] = this->m_textures[8];
-  this->m_textures[10] = this->m_textures[8];
-  this->m_textures[11] = this->m_textures[8];
+  this->m_textures[11] = this->m_textures[10];
+  this->m_textures[12] = this->m_textures[10];
+  this->m_textures[13] = this->m_textures[10];
+  this->m_textures[14] = this->m_textures[10];
+
 }
 
 void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {

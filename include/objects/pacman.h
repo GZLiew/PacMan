@@ -11,10 +11,10 @@
 #include <memory>
 #include <vector>
 
-#define PACMAN_ANIMATION_STATES 12
+#define PACMAN_ANIMATION_STATES 15
 
 namespace Objects {
-  enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
+  enum Direction { UP, DOWN, LEFT, RIGHT, NONE };
 
   class Pacman : public Entity {
   public:
