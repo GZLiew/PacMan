@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 # Note: update this to your new project's name and version
 project(PacMan 
   VERSION 1.0
-  LANGUAGES CXX
+  LANGUAGES C CXX
 )
 
 # ---- Include guards ----
@@ -38,20 +38,37 @@ CPMAddPackage(
   VERSION 2.0.12
   URL https://libsdl.org/release/SDL2-2.0.12.zip
 )
+if (SDL2_ADDED)
+  add_library(SDL2::SDL2 ALIAS SDL2)
+endif()
+
+CPMAddPackage(
+  NAME freetype
+  GIT_REPOSITORY https://github.com/aseprite/freetype2.git
+  GIT_TAG VER-2-10-0
+  VERSION 2.10.0
+)
+if (freetype_ADDED)
+  add_library(Freetype::Freetype ALIAS freetype)
+endif()
+
 
 CPMAddPackage(
   NAME SDL2_ttf
   VERSION 2.0.15
   URL https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.zip
-  DOWNLOAD_ONLY TRUE
 )
 
 CPMAddPackage(
-  NAME SDL2_mixer
-  VERSION 2.0.15
-  URL https://libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.zip
-  DOWNLOAD_ONLY TRUE
+  NAME SDL_sound
+  GITHUB_REPOSITORY sezero/SDL_sound
+  VERSION 1.0.3
+  GIT_TAG 09e0f6797e7dbb5fdf227ced5597ea8319c127e1
 )
+
+#if(openal_ADDED)
+  #set_target_properties(openal PROPERTIES COMPILE_OPTIONS "-fpermissive")
+#endif()
 
 # ---- Add source files ----
 FILE(GLOB headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/**/*.h)
@@ -69,18 +86,10 @@ target_include_directories(PacMan
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
-target_include_directories(PacMan
-  PUBLIC
-    $<BUILD_INTERFACE:${SDL2_ttf_SOURCE_DIR}>
-)
-
-target_include_directories(PacMan
-  PUBLIC
-    $<BUILD_INTERFACE:${SDL2_mixer_SOURCE_DIR}>
-)
-
-target_include_directories(PacMan PRIVATE ${SDL2_SOURCE_DIR}/include)
-target_include_directories(PacMan PRIVATE ${glm_SOURCE_DIR})
+target_include_directories(PacMan PUBLIC ${SDL2_ttf_SOURCE_DIR})
+target_include_directories(PacMan PUBLIC ${SDL2_SOURCE_DIR}/include)
+target_include_directories(PacMan PUBLIC ${openal_SOURCE_DIR}/include)
+target_include_directories(PacMan PUBLIC ${glm_SOURCE_DIR})
 
 # ---- Create an installable target ----
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
