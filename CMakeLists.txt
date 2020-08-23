@@ -59,13 +59,6 @@ CPMAddPackage(
   URL https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.zip
 )
 
-CPMAddPackage(
-  NAME SDL_sound
-  GITHUB_REPOSITORY sezero/SDL_sound
-  VERSION 1.0.3
-  GIT_TAG 09e0f6797e7dbb5fdf227ced5597ea8319c127e1
-)
-
 #if(openal_ADDED)
   #set_target_properties(openal PROPERTIES COMPILE_OPTIONS "-fpermissive")
 #endif()

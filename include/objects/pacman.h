@@ -22,7 +22,7 @@ namespace Objects {
     void handleInput(std::shared_ptr<Input::Input> input);
     void update(float dt);
     void checkDirection(std::vector<Direction> directions);
-
+    void kill();
     void draw();
 
   private:

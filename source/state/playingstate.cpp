@@ -56,6 +56,9 @@ void State::PlayingState::update(float dt) {
   this->m_pacman.update(dt);
   for(auto& ghost : this->m_ghosts) {
     ghost.update(dt);
+    if(this->m_pacman.hitbox.collide(ghost.hitbox)){
+      this->m_pacman.kill();
+    }
   }
 }
 

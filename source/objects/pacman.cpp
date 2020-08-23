@@ -1,34 +1,25 @@
 #include <objects/pacman.h>
+#include <iostream>
 
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({32.0f, 32.0f}, {13.5 * 16.f - 8, 26 * 16.f - 8}, {0.f, 0.f},
              Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
       m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
-  this->m_textures[0] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/1.bmp"),
+  
+  int sprite = 1, pointer = -(PACMAN_ANIMATION_STATES / 3);
+  for(int i = 0; i < PACMAN_ANIMATION_STATES; i++){
+    int i_c = i % (PACMAN_ANIMATION_STATES / 3);
+    if(i_c == 0){
+      this->m_textures[i] = std::shared_ptr<SDL_Texture>(
+      Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/pacman/" +  std::to_string(sprite) + ".bmp").c_str()),
       [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  this->m_textures[1] = this->m_textures[0];
-  this->m_textures[2] = this->m_textures[0];
-  this->m_textures[3] = this->m_textures[0];
-  this->m_textures[4] = this->m_textures[0];
-
-  this->m_textures[5] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/2.bmp"),
-      [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  this->m_textures[6] = this->m_textures[5];
-  this->m_textures[7] = this->m_textures[5];
-  this->m_textures[8] = this->m_textures[5];
-  this->m_textures[9] = this->m_textures[5];
-
-  this->m_textures[10] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), "resources/pacman/3.bmp"),
-      [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  this->m_textures[11] = this->m_textures[10];
-  this->m_textures[12] = this->m_textures[10];
-  this->m_textures[13] = this->m_textures[10];
-  this->m_textures[14] = this->m_textures[10];
-
+      sprite++;
+      pointer += (PACMAN_ANIMATION_STATES / 3);
+    } else {
+      this->m_textures[i] = this->m_textures[pointer];
+    }
+  }
 }
 
 void Objects::Pacman::handleInput(std::shared_ptr<Input::Input> input) {
@@ -83,6 +74,10 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
     this->m_stuck = true;
     this->updateVelocity({0.0, 0.0});
   }
+}
+
+void Objects::Pacman::kill() {
+  std::cout << "Ded" << std::endl;
 }
 
 void Objects::Pacman::draw() {
