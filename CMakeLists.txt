@@ -59,9 +59,22 @@ CPMAddPackage(
   URL https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.zip
 )
 
-#if(openal_ADDED)
-  #set_target_properties(openal PROPERTIES COMPILE_OPTIONS "-fpermissive")
-#endif()
+
+CPMAddPackage(
+  NAME SDL2_mixer
+  VERSION 2.0.15
+  URL https://libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.zip
+  DOWNLOAD_ONLY TRUE
+)
+
+if (SDL2_mixer_ADDED)
+  # quick and dirty target definitions
+  # might need extra configuration and install commands to work properly
+  file(GLOB SDL2_mixer_SOURCES "${SDL2_mixer_SOURCE_DIR}/*.c")
+  add_library(SDL2_mixer ${SDL2_mixer_SOURCES})
+  target_link_libraries(SDL2_mixer SDL2::SDL2)
+  target_include_directories(SDL2_mixer PUBLIC ${SDL2_mixer_SOURCE_DIR})
+endif()
 
 # ---- Add source files ----
 FILE(GLOB headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h ${CMAKE_CURRENT_SOURCE_DIR}/include/**/*.h)
@@ -79,10 +92,10 @@ target_include_directories(PacMan
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
-target_include_directories(PacMan PUBLIC ${SDL2_ttf_SOURCE_DIR})
-target_include_directories(PacMan PUBLIC ${SDL2_SOURCE_DIR}/include)
-target_include_directories(PacMan PUBLIC ${openal_SOURCE_DIR}/include)
-target_include_directories(PacMan PUBLIC ${glm_SOURCE_DIR})
+target_include_directories(PacMan PUBLIC PUBLIC $<BUILD_INTERFACE:${SDL2_ttf_SOURCE_DIR}>)
+target_include_directories(PacMan PUBLIC PUBLIC $<BUILD_INTERFACE:${SDL2_mixer_SOURCE_DIR}>)
+target_include_directories(PacMan PUBLIC PUBLIC $<BUILD_INTERFACE:${SDL2_SOURCE_DIR}/include>)
+target_include_directories(PacMan PUBLIC PUBLIC $<BUILD_INTERFACE:${glm_SOURCE_DIR}>)
 
 # ---- Create an installable target ----
 string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
