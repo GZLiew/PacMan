@@ -1,5 +1,4 @@
 #include <objects/pacman.h>
-#include <iostream>
 
 Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({32.0f, 32.0f}, {13.5 * 16.f - 8, 26 * 16.f - 8}, {0.f, 0.f},
@@ -77,7 +76,6 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
 }
 
 void Objects::Pacman::kill() {
-  std::cout << "Ded" << std::endl;
 }
 
 void Objects::Pacman::draw() {

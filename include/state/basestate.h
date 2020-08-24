@@ -10,7 +10,7 @@ class Application;
 namespace State {
   class BaseState {
   public:
-    BaseState(Application &app) : m_application(&app) {}
+    BaseState(Application &app) : m_application(app) {}
     virtual ~BaseState() = default;
 
     virtual void handleEvent(SDL_Event &e) = 0;
@@ -23,6 +23,6 @@ namespace State {
     virtual void onOpen() = 0;
 
   private:
-    Application *m_application;
+    Application& m_application;
   };
 }  // namespace State

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_ttf.h>
 #include <config.h>
 #include <deleters.h>
+#include <audio/manager.h>
 #include <input/keyboard.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
@@ -36,9 +35,8 @@ private:
   const Config& m_config;
 
   SDL_GLContext m_gl_context;
-
+  std::shared_ptr<Audio::Manager> m_audio_manager;
   std::vector<std::unique_ptr<State::BaseState>> m_states;
-
   std::shared_ptr<Render::MasterRenderer> m_renderer;
   std::unique_ptr<SDL_Window, SDL_WindowDeleter> m_window;
 };  // class Application

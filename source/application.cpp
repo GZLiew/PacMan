@@ -6,7 +6,7 @@ Application::Application(const Config& config) : m_config(config) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-  // Init SDL components
+  // Init SDL and GL
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
     Utils::showError("SDL failed to initialize: ");
     this->m_sdl_initialized = false;
@@ -31,6 +31,7 @@ Application::Application(const Config& config) : m_config(config) {
       this->m_sdl_initialized = true;
     }
 
+    // Init TTF
     TTF_Init();
     if (TTF_Init() == -1) {
       Utils::showError("SDL failed to initialize: ");
@@ -38,6 +39,9 @@ Application::Application(const Config& config) : m_config(config) {
     } else {
       this->m_ttf_initialized = true;
     }
+
+    // Init audio
+    this->m_audio_manager = std::shared_ptr<Audio::Manager>(new Audio::Manager());
 
     SDL_Renderer* render = SDL_CreateRenderer(this->m_window.get(), -1,
                                               SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
