@@ -3,52 +3,67 @@
 Objects::Ghost::Ghost(GhostType t, std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({32.0f, 32.0f}, {13.5 * 16.f - 8, 26 * 16.f - 8}, {0.5f, 0.f},
              Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
-      m_type(t), m_renderer(renderer) {
-  this->m_textures_down = this->m_textures_left = this->m_textures_right = this->m_textures_up = this->m_textures_none = std::vector<std::shared_ptr<SDL_Texture>>(GHOST_ANIMATION_STATES);
+      m_type(t),
+      m_renderer(renderer) {
+  this->m_textures_down = this->m_textures_left = this->m_textures_right = this->m_textures_up
+      = this->m_textures_none = std::vector<std::shared_ptr<SDL_Texture>>(GHOST_ANIMATION_STATES);
 
   std::string name = "";
-  switch(this->m_type) {
-    case BLINKY:   
+  switch (this->m_type) {
+    case BLINKY:
       name = "blinky";
       break;
-    case PINKY:   
+    case PINKY:
       name = "pinky";
       break;
-    case INKY:   
+    case INKY:
       name = "inky";
       break;
-    case CLYDE:   
+    case CLYDE:
       name = "clyde";
       break;
   }
 
-  for(int i = 0; i < GHOST_ANIMATION_STATES; i++)
+  for (int i = 0; i < GHOST_ANIMATION_STATES; i++)
     this->m_textures_none[i] = std::shared_ptr<SDL_Texture>(
-        Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/" + name + "/" + std::to_string(i/4 + 1) + ".bmp").c_str()),
+        Utils::loadSDLTexture(
+            renderer->renderer().get(),
+            std::string("resources/" + name + "/" + std::to_string(i / 4 + 1) + ".bmp").c_str()),
         [](SDL_Texture *t) { SDL_DestroyTexture(t); });
 
-  for(int i = 0; i < GHOST_ANIMATION_STATES; i++)
+  for (int i = 0; i < GHOST_ANIMATION_STATES; i++)
     this->m_textures_down[i] = std::shared_ptr<SDL_Texture>(
-        Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/" + name + "/" + std::to_string(i/4 + 1) + "_down.bmp").c_str()),
-        [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  
-  for(int i = 0; i < GHOST_ANIMATION_STATES; i++)
-    this->m_textures_left[i] = std::shared_ptr<SDL_Texture>(
-        Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/" + name + "/" + std::to_string(i/4 + 1) + "_left.bmp").c_str()),
-        [](SDL_Texture *t) { SDL_DestroyTexture(t); });
-  
-  for(int i = 0; i < GHOST_ANIMATION_STATES; i++)
-    this->m_textures_right[i] = std::shared_ptr<SDL_Texture>(
-        Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/" + name + "/" + std::to_string(i/4 + 1) + "_right.bmp").c_str()),
+        Utils::loadSDLTexture(
+            renderer->renderer().get(),
+            std::string("resources/" + name + "/" + std::to_string(i / 4 + 1) + "_down.bmp")
+                .c_str()),
         [](SDL_Texture *t) { SDL_DestroyTexture(t); });
 
-  for(int i = 0; i < GHOST_ANIMATION_STATES; i++)
+  for (int i = 0; i < GHOST_ANIMATION_STATES; i++)
+    this->m_textures_left[i] = std::shared_ptr<SDL_Texture>(
+        Utils::loadSDLTexture(
+            renderer->renderer().get(),
+            std::string("resources/" + name + "/" + std::to_string(i / 4 + 1) + "_left.bmp")
+                .c_str()),
+        [](SDL_Texture *t) { SDL_DestroyTexture(t); });
+
+  for (int i = 0; i < GHOST_ANIMATION_STATES; i++)
+    this->m_textures_right[i] = std::shared_ptr<SDL_Texture>(
+        Utils::loadSDLTexture(
+            renderer->renderer().get(),
+            std::string("resources/" + name + "/" + std::to_string(i / 4 + 1) + "_right.bmp")
+                .c_str()),
+        [](SDL_Texture *t) { SDL_DestroyTexture(t); });
+
+  for (int i = 0; i < GHOST_ANIMATION_STATES; i++)
     this->m_textures_up[i] = std::shared_ptr<SDL_Texture>(
-        Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/" + name + "/" + std::to_string(i/4 + 1) + "_up.bmp").c_str()),
+        Utils::loadSDLTexture(
+            renderer->renderer().get(),
+            std::string("resources/" + name + "/" + std::to_string(i / 4 + 1) + "_up.bmp").c_str()),
         [](SDL_Texture *t) { SDL_DestroyTexture(t); });
 
   /* initialize random seed: */
-  srand (time(NULL));
+  srand(time(NULL));
 
   /* generate secret number between 1 and 10: */
   this->m_direction = static_cast<Direction>(rand() % 4);
@@ -68,15 +83,13 @@ void Objects::Ghost::checkDirection(std::vector<Direction> directions) {
   changeDirection(directions[rand() % directions.size()]);
 }
 
-void Objects::Ghost::setScare(bool s) {
-  this->m_is_scared = s;
-}
+void Objects::Ghost::setScare(bool s) { this->m_is_scared = s; }
 
 void Objects::Ghost::draw() {
   int state = this->m_animation_state % GHOST_ANIMATION_STATES;
   SDL_Rect renderQuad{(int)(this->position.x), (int)(this->position.y), (int)this->dimension.x,
                       (int)this->dimension.y};
-  
+
   std::shared_ptr<SDL_Texture> texture = nullptr;
   switch (this->m_direction) {
     case UP:
@@ -96,8 +109,8 @@ void Objects::Ghost::draw() {
       break;
   }
 
-  SDL_RenderCopyEx(this->m_renderer->renderer().get(), texture.get(), NULL,
-                       &renderQuad, 0, NULL, SDL_FLIP_NONE);
+  SDL_RenderCopyEx(this->m_renderer->renderer().get(), texture.get(), NULL, &renderQuad, 0, NULL,
+                   SDL_FLIP_NONE);
 }
 
 void Objects::Ghost::changeDirection(Direction dir) {

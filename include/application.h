@@ -1,8 +1,8 @@
 #pragma once
 
+#include <audio/manager.h>
 #include <config.h>
 #include <deleters.h>
-#include <audio/manager.h>
 #include <input/keyboard.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
@@ -24,6 +24,7 @@ public:
   void runLoop();
   Config getConfig();
   std::shared_ptr<Render::MasterRenderer> renderer();
+  std::shared_ptr<Audio::Manager> audioManager();
 
 private:
   void lockFps();

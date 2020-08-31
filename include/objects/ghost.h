@@ -2,19 +2,18 @@
 
 #include <deleters.h>
 #include <entity.h>
-#include <objects/pacman.h>
 #include <input.h>
 #include <input/actions.h>
+#include <objects/pacman.h>
 #include <render/masterrenderer.h>
+#include <stdio.h>  /* printf, scanf, puts, NULL */
+#include <stdlib.h> /* srand, rand */
+#include <time.h>   /* time */
 #include <utils.h>
 
 #include <algorithm>
 #include <memory>
 #include <vector>
-
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
 
 #define GHOST_ANIMATION_STATES 12
 

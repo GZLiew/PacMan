@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 struct SDL_WindowDeleter {
   inline void operator()(SDL_Window* window) { SDL_DestroyWindow(window); }

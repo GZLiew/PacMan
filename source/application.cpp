@@ -97,6 +97,8 @@ Config Application::getConfig() { return this->m_config; }
 
 std::shared_ptr<Render::MasterRenderer> Application::renderer() { return this->m_renderer; }
 
+std::shared_ptr<Audio::Manager> Application::audioManager() { return this->m_audio_manager; }
+
 void Application::lockFps() {
   double dt = SDL_GetTicks();
   dt = SDL_GetTicks() - dt;

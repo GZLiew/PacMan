@@ -23,6 +23,6 @@ namespace State {
     virtual void onOpen() = 0;
 
   private:
-    Application& m_application;
+    Application &m_application;
   };
 }  // namespace State

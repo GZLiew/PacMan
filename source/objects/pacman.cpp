@@ -5,14 +5,16 @@ Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
              Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
       m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
-  
+
   int sprite = 1, pointer = -(PACMAN_ANIMATION_STATES / 3);
-  for(int i = 0; i < PACMAN_ANIMATION_STATES; i++){
+  for (int i = 0; i < PACMAN_ANIMATION_STATES; i++) {
     int i_c = i % (PACMAN_ANIMATION_STATES / 3);
-    if(i_c == 0){
+    if (i_c == 0) {
       this->m_textures[i] = std::shared_ptr<SDL_Texture>(
-      Utils::loadSDLTexture(renderer->renderer().get(), std::string("resources/pacman/" +  std::to_string(sprite) + ".bmp").c_str()),
-      [](SDL_Texture *t) { SDL_DestroyTexture(t); });
+          Utils::loadSDLTexture(
+              renderer->renderer().get(),
+              std::string("resources/pacman/" + std::to_string(sprite) + ".bmp").c_str()),
+          [](SDL_Texture *t) { SDL_DestroyTexture(t); });
       sprite++;
       pointer += (PACMAN_ANIMATION_STATES / 3);
     } else {
@@ -75,8 +77,7 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
   }
 }
 
-void Objects::Pacman::kill() {
-}
+void Objects::Pacman::kill() {}
 
 void Objects::Pacman::draw() {
   int state = this->m_animation_state % PACMAN_ANIMATION_STATES;
