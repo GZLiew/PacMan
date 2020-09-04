@@ -80,7 +80,30 @@ void Objects::Ghost::update(float dt) {
 }
 
 void Objects::Ghost::checkDirection(std::vector<Direction> directions) {
-  changeDirection(directions[rand() % directions.size()]);
+  // Check if Pacman can go back
+  bool gotDirection = false;
+  while (!gotDirection) {
+    auto direction = directions[rand() % directions.size()];
+    switch (this->m_direction) {
+      case UP:
+        if (direction != DOWN) gotDirection = true;
+        break;
+      case DOWN:
+        if (direction != UP) gotDirection = true;
+        break;
+      case LEFT:
+        if (direction != RIGHT) gotDirection = true;
+        break;
+      case RIGHT:
+        if (direction != LEFT) gotDirection = true;
+        break;
+      default:
+        break;
+    }
+    if (gotDirection) {
+      this->changeDirection(direction);
+    }
+  }
 }
 
 void Objects::Ghost::setScare(bool s) { this->m_is_scared = s; }
