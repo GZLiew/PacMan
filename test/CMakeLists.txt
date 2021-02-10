@@ -47,14 +47,14 @@ FILE(COPY ../resources/ DESTINATION "${CMAKE_BINARY_DIR}/resources")
 
 file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.cpp)
 add_executable(PacManTests ${sources})
-target_link_libraries(PacManTests doctest PacMan SDL2)
+target_link_libraries(PacManTests doctest PacMan SDL2 SDL2_ttf SDL2_mixer glm)
 
 set_target_properties(PacManTests PROPERTIES CXX_STANDARD 17)
 
 # enable compiler warnings
 if (NOT TEST_INSTALLED_VERSION)
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(PacMan PUBLIC -Wall -pedantic -Wextra -Werror)
+    target_compile_options(PacMan PUBLIC -Wall -Wextra)
   elseif(MSVC)
     target_compile_options(PacMan PUBLIC /W4 /WX)
     target_compile_definitions(PacManTests PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)
