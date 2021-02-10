@@ -49,7 +49,7 @@ Application::Application(const Config& config) : m_config(config) {
     this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(render));
 
     // Push initial state
-    this->pushState<State::PlayingState>(*this);
+    this->pushState<State::CutsceneState>(*this);
   }
 }
 

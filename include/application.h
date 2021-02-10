@@ -6,6 +6,7 @@
 #include <input/keyboard.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
+#include <state/cutscenestate.h>
 #include <state/playingstate.h>
 #include <stdio.h>
 
