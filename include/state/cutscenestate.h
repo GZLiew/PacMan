@@ -6,7 +6,7 @@
 #include <objects/ghost.h>
 #include <objects/level.h>
 #include <objects/pacman.h>
-#include <objects/score.h>
+#include <objects/ready.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
 
@@ -32,5 +32,6 @@ namespace State {
     Objects::Level m_level;
     Objects::Pacman m_pacman;
     std::vector<Objects::Ghost> m_ghosts;
+    Objects::Ready m_ready;
   };
 }  // namespace State

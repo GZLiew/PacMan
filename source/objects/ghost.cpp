@@ -1,8 +1,8 @@
 #include <objects/ghost.h>
 
-Objects::Ghost::Ghost(GhostType t, std::shared_ptr<Render::MasterRenderer> renderer)
-    : Entity({32.0f, 32.0f}, {13.5 * 16.f - 8, 26 * 16.f - 8}, {0.5f, 0.f},
-             Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
+Objects::Ghost::Ghost(GhostType t, std::shared_ptr<Render::MasterRenderer> renderer,
+                      const glm::vec2 &pos)
+    : Entity({32.0f, 32.0f}, pos, {0.5f, 0.f}, Collision::Hitbox({16.0f, 16.0f}, pos)),
       m_type(t),
       m_renderer(renderer) {
   this->m_textures_down = this->m_textures_left = this->m_textures_right = this->m_textures_up

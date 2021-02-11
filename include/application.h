@@ -22,6 +22,7 @@ public:
     auto& s = m_states.back();
     s->onOpen();
   }
+  void popState();
   void runLoop();
   Config getConfig();
   std::shared_ptr<Render::MasterRenderer> renderer();
@@ -34,6 +35,7 @@ private:
   bool m_window_created = false;
   bool m_gl_initialized = false;
   bool m_ttf_initialized = false;
+  bool m_isPopState = false;
   const Config& m_config;
 
   SDL_GLContext m_gl_context;

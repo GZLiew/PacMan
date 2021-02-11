@@ -49,6 +49,7 @@ Application::Application(const Config& config) : m_config(config) {
     this->m_renderer = std::shared_ptr<Render::MasterRenderer>(new Render::MasterRenderer(render));
 
     // Push initial state
+    this->pushState<State::PlayingState>(*this);
     this->pushState<State::CutsceneState>(*this);
   }
 }
@@ -66,6 +67,8 @@ Application::~Application() {
   this->m_renderer.reset();
   this->m_window.reset();
 }
+
+void Application::popState() { this->m_isPopState = true; }
 
 void Application::runLoop() {
   SDL_Event e;
@@ -89,6 +92,11 @@ void Application::runLoop() {
         default:
           break;
       }
+    }
+
+    if (this->m_isPopState) {
+      m_isPopState = false;
+      m_states.pop_back();
     }
   }
 }

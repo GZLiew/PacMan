@@ -14,10 +14,14 @@ State::PlayingState::PlayingState(Application& app)
                                                            {Input::Action::LEFT, SDLK_LEFT},
                                                            {Input::Action::RIGHT, SDLK_RIGHT}}));
   this->m_ghosts = std::vector<Objects::Ghost>();
-  this->m_ghosts.push_back(Objects::Ghost(Objects::GhostType::BLINKY, app.renderer()));
-  this->m_ghosts.push_back(Objects::Ghost(Objects::GhostType::PINKY, app.renderer()));
-  this->m_ghosts.push_back(Objects::Ghost(Objects::GhostType::INKY, app.renderer()));
-  this->m_ghosts.push_back(Objects::Ghost(Objects::GhostType::CLYDE, app.renderer()));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::BLINKY, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::PINKY, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::INKY, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::CLYDE, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
 }
 
 State::PlayingState::~PlayingState() { this->m_input.reset(); }

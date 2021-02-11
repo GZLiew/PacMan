@@ -22,7 +22,7 @@ namespace Objects {
 
   class Ghost : public Entity {
   public:
-    Ghost(GhostType t, std::shared_ptr<Render::MasterRenderer> renderer);
+    Ghost(GhostType t, std::shared_ptr<Render::MasterRenderer> renderer, const glm::vec2& pos);
     void update(float dt);
     void checkDirection(std::vector<Direction> directions);
     void setScare(bool s);

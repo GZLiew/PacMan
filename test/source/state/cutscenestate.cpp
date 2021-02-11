@@ -1,8 +1,8 @@
+#include <application.h>
 #include <doctest/doctest.h>
 #include <input/keyboard.h>
-#include <stdlib.h>
 #include <state/cutscenestate.h>
-#include <application.h>
+#include <stdlib.h>
 
 #include <array>
 

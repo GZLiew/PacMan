@@ -22,7 +22,7 @@ namespace State {
 
     virtual void onOpen() = 0;
 
-  private:
+  protected:
     Application &m_application;
   };
 }  // namespace State
