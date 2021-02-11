@@ -15,13 +15,14 @@ State::PlayingState::PlayingState(Application& app)
                                                            {Input::Action::RIGHT, SDLK_RIGHT}}));
   this->m_ghosts = std::vector<Objects::Ghost>();
   this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::BLINKY, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+      Objects::Ghost(Objects::GhostType::BLINKY, app.renderer(), {13.5 * 16.f, 14 * 16.f}));
+  this->m_ghosts.back().setState(Objects::GhostState::DEAD);
   this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::PINKY, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+      Objects::Ghost(Objects::GhostType::PINKY, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
   this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::INKY, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+      Objects::Ghost(Objects::GhostType::INKY, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
   this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::CLYDE, app.renderer(), {13.5 * 16.f - 8, 17 * 16.f - 8}));
+      Objects::Ghost(Objects::GhostType::CLYDE, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
 }
 
 State::PlayingState::~PlayingState() { this->m_input.reset(); }
@@ -61,6 +62,9 @@ void State::PlayingState::update(float dt) {
       this->peletsEaten++;
       this->m_score.add(50);
       this->m_audio_manager->playSound("large_pellet");
+      for (auto& ghost : this->m_ghosts) {
+        ghost.setState(Objects::GhostState::VULNERABLE);
+      }
     }
   }
 
