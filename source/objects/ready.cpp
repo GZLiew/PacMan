@@ -1,7 +1,5 @@
 #include <objects/ready.h>
 
-#include <iostream>
-
 Objects::Ready::Ready(std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({10 * 16, 16}, {20 * 16, .5 * 16}, {0.f, 0.f},
              Collision::Hitbox({0.0f, 0.0f}, {0.f, 0.f})),

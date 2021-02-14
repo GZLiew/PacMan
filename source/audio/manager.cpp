@@ -1,7 +1,5 @@
 #include <audio/manager.h>
 
-#include <iostream>
-
 Audio::Manager::Manager() {
   if (Mix_OpenAudio(FREQUENCY, FORMAT, SIZE, CHUNK_SIZE) != 0) {
     Utils::showError("SDL_mixer failed to initialize: ");
@@ -12,14 +10,6 @@ Audio::Manager::Manager() {
       = {"intro",     "intermission", "death",      "munch_a", "munch_b",    "large_pellet",
          "ghost_eat", "siren",        "vulnerable", "fruit",   "extra_life", "booster"};
   const std::string postfix = ".wav";
-
-  /*
-  Mix_Chunk* c;
-  c = Mix_LoadWAV("/resources/sounds/intro.wav");
-  if(c == nullptr) {
-    std::cout << "faiou" <<
-  }
-  */
 
   this->m_sounds = std::vector<std::unique_ptr<Mix_Chunk>>();
   for (int i = 0; i < SOUND_AMOUNT; i++) {

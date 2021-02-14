@@ -25,8 +25,8 @@ void State::CutsceneState::handleInput() {}
 
 void State::CutsceneState::update(float dt) {
   this->cycleCount++;
-  if (this->cycleCount % MAX_CICLE_COUNT == 0) {
-    this->m_application.popState();
+  if (this->cycleCount % MAX_CICLE_COUNT_CUTSCENE == 0) {
+    this->switchToPlayingState();
   }
 }
 
@@ -39,3 +39,7 @@ void State::CutsceneState::render(std::shared_ptr<Render::MasterRenderer> render
 }
 
 void State::CutsceneState::onOpen() { this->m_audio_manager->playSound("intro"); }
+
+void State::CutsceneState::onSwitchBack() {}
+
+void State::CutsceneState::switchToPlayingState() { this->m_application.popState(); }

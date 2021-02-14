@@ -22,6 +22,8 @@ namespace State {
 
     virtual void onOpen() = 0;
 
+    virtual void onSwitchBack() = 0;
+
   protected:
     Application &m_application;
   };

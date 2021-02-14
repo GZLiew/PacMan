@@ -6,20 +6,20 @@
 #include <objects/ghost.h>
 #include <objects/level.h>
 #include <objects/pacman.h>
-#include <objects/score.h>
+#include <objects/ready.h>
 #include <render/masterrenderer.h>
 #include <state/basestate.h>
-#include <state/deathstate.h>
 
 #include <memory>
 
-#define MAX_CICLE_COUNT_PLAYING 256
+#define MAX_CICLE_COUNT_DEATH 128
 
 namespace State {
-  class PlayingState : public BaseState {
+  class DeathState : public BaseState {
   public:
-    PlayingState(Application &app);
-    ~PlayingState();
+    DeathState(Application &app, Objects::Level &level, Objects::Pacman &pacman,
+               Objects::Score &score, std::vector<Objects::Ghost> ghosts);
+    ~DeathState();
 
     void handleEvent(SDL_Event &e) override;
     void handleInput() override;
@@ -29,17 +29,13 @@ namespace State {
     void onSwitchBack() override;
 
   private:
-    int peletsEaten = 0;
     int cycleCount = 0;
-    bool deathStateSwitched = false;
     std::shared_ptr<Audio::Manager> m_audio_manager;
-    std::shared_ptr<Input::Input> m_input;
     Objects::Level m_level;
     Objects::Pacman m_pacman;
     Objects::Score m_score;
     std::vector<Objects::Ghost> m_ghosts;
 
-    void switchToDeathState();
-    void resetLevel(Application &app);
+    void switchToPlayingState();
   };
 }  // namespace State

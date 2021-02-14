@@ -5,6 +5,7 @@ Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
              Collision::Hitbox({16.0f, 16.0f}, {13.5 * 16.f, 26 * 16.f})),
       m_renderer(renderer) {
   this->m_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_ANIMATION_STATES);
+  this->m_death_textures = std::vector<std::shared_ptr<SDL_Texture>>(PACMAN_DEATH_ANIMATION_STATES);
 
   int sprite = 1, pointer = -(PACMAN_ANIMATION_STATES / 3);
   for (int i = 0; i < PACMAN_ANIMATION_STATES; i++) {
@@ -20,6 +21,14 @@ Objects::Pacman::Pacman(std::shared_ptr<Render::MasterRenderer> renderer)
     } else {
       this->m_textures[i] = this->m_textures[pointer];
     }
+  }
+
+  for (int i = 0; i < PACMAN_DEATH_ANIMATION_STATES; i++) {
+    this->m_death_textures[i] = std::shared_ptr<SDL_Texture>(
+        Utils::loadSDLTexture(
+            renderer->renderer().get(),
+            std::string("resources/pacman/death/" + std::to_string(i + 1) + ".bmp").c_str()),
+        [](SDL_Texture *t) { SDL_DestroyTexture(t); });
   }
 }
 
@@ -58,9 +67,13 @@ void Objects::Pacman::update(float dt) {
       break;
   }
   // Update animation
-  if (!this->m_stuck) this->m_animation_state += 1;
-  if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_animation_state = 0;
+  if (!this->m_stuck) this->m_animation_state++;
+  if (this->m_is_dead && this->m_animation_state % 4 == 0) this->m_death_animation_state++;
+  if (this->m_animation_state == PACMAN_ANIMATION_STATES) this->m_death_animation_state = 0;
+  if (this->m_death_animation_state == PACMAN_DEATH_ANIMATION_STATES)
+    this->m_death_animation_state = PACMAN_DEATH_ANIMATION_STATES - 1;
 
+  if (this->m_is_dead) return;
   // Update position
   this->position += this->velocity * dt;
   this->hitbox.pos += this->velocity * dt;
@@ -77,12 +90,23 @@ void Objects::Pacman::checkDirection(std::vector<Direction> directions) {
   }
 }
 
-void Objects::Pacman::kill() {}
+void Objects::Pacman::kill() {
+  this->m_is_dead = true;
+  this->m_stuck = false;
+  this->m_death_animation_state = 0;
+}
 
 void Objects::Pacman::draw() {
   int state = this->m_animation_state % PACMAN_ANIMATION_STATES;
   SDL_Rect renderQuad{(int)(this->position.x), (int)(this->position.y), (int)this->dimension.x,
                       (int)this->dimension.y};
+
+  if (this->m_is_dead) {
+    state = this->m_death_animation_state;
+    SDL_RenderCopyEx(this->m_renderer->renderer().get(), this->m_death_textures[state].get(), NULL,
+                     &renderQuad, 90, NULL, SDL_FLIP_NONE);
+    return;
+  }
 
   switch (this->m_direction) {
     case UP:
@@ -106,6 +130,19 @@ void Objects::Pacman::draw() {
                        &renderQuad, 0, NULL, SDL_FLIP_NONE);
       break;
   }
+}
+
+void Objects::Pacman::reset() {
+  this->m_initially_stuck = true;
+  this->m_stuck = true;
+  this->m_animation_state = 9;
+  this->m_is_dead = false;
+  this->m_direction = RIGHT;
+  this->m_next_direction = NONE;
+  int m_death_animation_state = 0;
+  this->updateVelocity({0.f, 0.f});
+  this->position = {13.5 * 16.f - 8, 26 * 16.f - 8};
+  this->hitbox.pos = {13.5 * 16.f, 26 * 16.f};
 }
 
 void Objects::Pacman::changeDirection(Direction dir) {

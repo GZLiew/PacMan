@@ -12,7 +12,7 @@
 
 #include <memory>
 
-#define MAX_CICLE_COUNT 256
+#define MAX_CICLE_COUNT_CUTSCENE 256
 
 namespace State {
   class CutsceneState : public BaseState {
@@ -25,6 +25,7 @@ namespace State {
     void update(float dt) override;
     void render(std::shared_ptr<Render::MasterRenderer> renderer) override;
     void onOpen() override;
+    void onSwitchBack() override;
 
   private:
     int cycleCount = 0;
@@ -33,5 +34,7 @@ namespace State {
     Objects::Pacman m_pacman;
     std::vector<Objects::Ghost> m_ghosts;
     Objects::Ready m_ready;
+
+    void switchToPlayingState();
   };
 }  // namespace State

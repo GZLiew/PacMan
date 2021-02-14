@@ -1,7 +1,5 @@
 #include <objects/score.h>
 
-#include <iostream>
-
 Objects::Score::Score(std::shared_ptr<Render::MasterRenderer> renderer)
     : Entity({10 * 16, 16}, {9.5 * 16, .2 * 16}, {0.f, 0.f},
              Collision::Hitbox({0.0f, 0.0f}, {0.f, 0.f})),

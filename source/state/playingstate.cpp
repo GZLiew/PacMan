@@ -6,23 +6,8 @@ State::PlayingState::PlayingState(Application& app)
       m_pacman(app.renderer()),
       m_level({0.f, 0.f}, app.renderer()),
       m_score(app.renderer()) {
-  this->m_input
-      = std::shared_ptr<Input::Input>(new Input::Keyboard({{Input::Action::CONFIRM, SDLK_RETURN},
-                                                           {Input::Action::DECLINE, SDLK_ESCAPE},
-                                                           {Input::Action::UP, SDLK_UP},
-                                                           {Input::Action::DOWN, SDLK_DOWN},
-                                                           {Input::Action::LEFT, SDLK_LEFT},
-                                                           {Input::Action::RIGHT, SDLK_RIGHT}}));
   this->m_ghosts = std::vector<Objects::Ghost>();
-  this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::BLINKY, app.renderer(), {13.5 * 16.f, 14 * 16.f}));
-  this->m_ghosts.back().setState(Objects::GhostState::DEAD);
-  this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::PINKY, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
-  this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::INKY, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
-  this->m_ghosts.push_back(
-      Objects::Ghost(Objects::GhostType::CLYDE, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
+  this->resetLevel(app);
 }
 
 State::PlayingState::~PlayingState() { this->m_input.reset(); }
@@ -40,6 +25,21 @@ void State::PlayingState::update(float dt) {
     for (auto& ghost : this->m_ghosts) {
       if (corner->hitbox.equal(ghost.hitbox)) {
         ghost.checkDirection(corner->directions());
+      }
+      if (ghost.hitbox.collide(this->m_pacman.hitbox)) {
+        switch (ghost.getState()) {
+          case Objects::GhostState::VULNERABLE:
+            ghost.setState(Objects::GhostState::DEAD);
+            break;
+          case Objects::GhostState::CHASING:
+            this->switchToDeathState();
+            break;
+          case Objects::GhostState::BLOCKED:
+            this->switchToDeathState();
+            break;
+          case Objects::GhostState::DEAD:
+            break;
+        }
       }
     }
   }
@@ -72,16 +72,13 @@ void State::PlayingState::update(float dt) {
   this->m_pacman.update(dt);
   for (auto& ghost : this->m_ghosts) {
     ghost.update(dt);
-    if (this->m_pacman.hitbox.collide(ghost.hitbox)) {
-      this->m_pacman.kill();
-    }
   }
 
   // Play default level sounds
-  if (this->cycleCount % 16 == 0) this->m_audio_manager->playSound("siren");
+  if (this->cycleCount % 32 == 0) this->m_audio_manager->playSound("siren");
 
   this->cycleCount++;
-  if (this->cycleCount % MAX_CICLE_COUNT == 0) this->cycleCount = 0;
+  if (this->cycleCount % MAX_CICLE_COUNT_PLAYING == 0) this->cycleCount = 0;
 }
 
 void State::PlayingState::render(std::shared_ptr<Render::MasterRenderer> renderer) {
@@ -93,3 +90,42 @@ void State::PlayingState::render(std::shared_ptr<Render::MasterRenderer> rendere
 }
 
 void State::PlayingState::onOpen() {}
+
+void State::PlayingState::onSwitchBack() {
+  if (this->deathStateSwitched) {
+    this->resetLevel(this->m_application);
+  }
+
+  this->deathStateSwitched = false;
+}
+
+void State::PlayingState::switchToDeathState() {
+  if (!this->deathStateSwitched) {
+    this->m_application.pushState<State::DeathState>(this->m_application, this->m_level,
+                                                     this->m_pacman, this->m_score, this->m_ghosts);
+    this->deathStateSwitched = true;
+  }
+}
+
+void State::PlayingState::resetLevel(Application& app) {
+  this->m_ghosts.clear();
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::BLINKY, app.renderer(), {13.5 * 16.f, 14 * 16.f}));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::PINKY, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::INKY, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
+  this->m_ghosts.push_back(
+      Objects::Ghost(Objects::GhostType::CLYDE, app.renderer(), {13.5 * 16.f, 17 * 16.f}));
+
+  this->m_input.reset();
+  this->m_input
+      = std::shared_ptr<Input::Input>(new Input::Keyboard({{Input::Action::CONFIRM, SDLK_RETURN},
+                                                           {Input::Action::DECLINE, SDLK_ESCAPE},
+                                                           {Input::Action::UP, SDLK_UP},
+                                                           {Input::Action::DOWN, SDLK_DOWN},
+                                                           {Input::Action::LEFT, SDLK_LEFT},
+                                                           {Input::Action::RIGHT, SDLK_RIGHT}}));
+
+  this->m_pacman.reset();
+}

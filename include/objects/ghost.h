@@ -16,10 +16,12 @@
 #include <vector>
 
 #define GHOST_ANIMATION_STATES 12
+#define MAX_VULNERABILITY_COUNTER 768
+#define BLINK_VULNERABILITY 512
 
 namespace Objects {
   enum GhostType { BLINKY, PINKY, INKY, CLYDE };
-  enum GhostState { BLOCKED, CHASING, VULNERABLE, DEAD };
+  enum GhostState { BLOCKED, DEAD, CHASING, VULNERABLE };
 
   class Ghost : public Entity {
   public:
@@ -27,6 +29,7 @@ namespace Objects {
     void update(float dt);
     void checkDirection(std::vector<Direction> directions);
     void setState(GhostState s);
+    GhostState getState();
 
     void draw();
 
@@ -49,6 +52,7 @@ namespace Objects {
     std::vector<std::shared_ptr<SDL_Texture>> m_textures_dead_up;
     std::shared_ptr<Render::MasterRenderer> m_renderer;
     int m_animation_state = 0;
+    int m_vulnerable_counter = 0;
     float dt;
   };
 }  // namespace Objects

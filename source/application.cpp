@@ -97,6 +97,8 @@ void Application::runLoop() {
     if (this->m_isPopState) {
       m_isPopState = false;
       m_states.pop_back();
+      auto& state = m_states.back();
+      state->onSwitchBack();
     }
   }
 }
